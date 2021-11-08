@@ -6,6 +6,7 @@
   import Main from './Components/Main.svelte'
   import Methodology from './Components/Methdology.svelte'
   import Footer from './Components/Footer.svelte'
+  import SpecialThanks from './Components/SpecialThanks.svelte';
 
   export let nytMergedD = [];
   
@@ -26,6 +27,8 @@
 </main>
 
 <Methodology />
+
+<SpecialThanks />
 
 <Footer />
 

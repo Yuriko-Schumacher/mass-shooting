@@ -58,7 +58,7 @@
     How much was the <span class="selected-shooting">{selectedD}</span> reported, compared to other shootings?
   </h2>
   <div>
-    <p>Select another shooting to highlight</p>
+    <p>Select another shooting to highlight.<br>Tell me which shooting came to your mind first.</p>
     <select bind:value={selectedValue} on:change={selectShooting}>
       {#each filteredD as d}
         <option value={d}>{d.case}</option>
@@ -139,8 +139,18 @@
 </article>
 
 <style>
+  h2 {
+    text-align: center;
+  }
+
   article {
     margin: 10em auto;
+  }
+
+  div {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.8em;
+    text-align: center;
   }
 
   span {
