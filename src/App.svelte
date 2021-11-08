@@ -1,16 +1,31 @@
 <script>
-  import Header from './Header.svelte'
-  import Footer from './Footer.svelte'
+  import * as d3 from 'd3';
 
-	export let name;
+  import Header from './Components/Header.svelte'
+  import Title from './Components/Title.svelte'
+  import Main from './Components/Main.svelte'
+  import Methodology from './Components/Methdology.svelte'
+  import Footer from './Components/Footer.svelte'
+
+  export let nytMergedD = [];
+  
+  let promise = getData();
+
+  async function getData() {
+    nytMergedD = await d3.csv("data/nyt_merged.csv")
+  }
 </script>
 
 <Header />
 
 <main>
-	<h1>Which mass shootings matter, and why?</h1>
-  <p>By {name}</p>
+  <Title />
+  {#await promise then data} 
+    <Main data={nytMergedD} />
+  {/await}
 </main>
+
+<Methodology />
 
 <Footer />
 

@@ -31,8 +31,16 @@ html,
 body {
 	margin: 0;
 	padding: 0;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 18px;
 }
 
 * {
 	box-sizing: border-box;
+}
+
+article {
+	max-width: 600px;
+	margin: 0 auto;
+	line-height: 1.5;
 }
