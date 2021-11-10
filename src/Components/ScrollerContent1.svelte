@@ -12,9 +12,9 @@
 
   const margin = { t: 25, r: 0, b: 50, l: 50 }
   const width = 550;
-  const height = 250;
+  let height = 250;
 
-  const innerHeight = height - margin.t - margin.b;
+  let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
 
   let domain = [...Array(42).keys()].map((d) => d + 1981);
@@ -30,9 +30,16 @@
   let aScale = d3.scalePow()
       .exponent(1)
       .domain([1982, 2021])
-      .range([0.1, 1])
+      .range([0, 1])
+
+  let rScale= d3.scaleSqrt()
+      .domain([0, 28])
+      .range([0, 10])
 
   $: if (index < 5) {
+    height = 250
+    innerHeight = height - margin.t - margin.b;
+
     domain = [...Array(42).keys()].map((d) => d + 1981);
     xScale = d3.scaleBand()
           .domain(domain)
@@ -46,7 +53,7 @@
     aScale = d3.scalePow()
       .exponent(1)
       .domain([1982, 2021])
-      .range([0.1, 1])
+      .range([0, 1])
   } 
   // else if (index == 6) {
   //   domain = [...Array(42).keys()].map((d) => d + 1981);
@@ -60,6 +67,9 @@
   //       .range([height - margin.b, margin.t]);
   // } 
   else if (index >= 5) {
+    height = 400
+    innerHeight = height - margin.t - margin.b;
+
     let parseTime = d3.timeParse("%m/%d/%y")
     xScale = d3.scaleTime()
       .domain([parseTime("01/01/81"), parseTime("12/31/21")])
@@ -77,7 +87,7 @@
 
 </script>
 
-<Scroller top="{0.3}" bottom="{0.5}" bind:index bind:offset bind:progress bind:count>
+<Scroller top="{0.3}" bottom="{0.7}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
     {#if index == 0}
@@ -92,7 +102,7 @@
               r="3"
               stroke="#eeeeee"
               stroke-width="0.4"
-              fill="orange"
+              fill="#eeeeee"
             />
         {/each}
         <text class="axis-label"
@@ -107,9 +117,9 @@
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
               r="3"
-              stroke="#eeeeee"
-              stroke-width="{d.id === selected ? 3 : 0.4}"
-              fill="orange"
+              stroke="{d.id === selected ? "orange" : "#eeeeee"}"
+              stroke-width="0.4"
+              fill="{d.id === selected ? "orange" : "#eeeeee"}"
               fill-opacity="{aScale(+d.year)}"
             />
           {/each}
@@ -127,7 +137,7 @@
               r="3"
               stroke="#eeeeee"
               stroke-width="0.4"
-              fill="orange"
+              fill="#eeeeee"
               fill-opacity="{aScale(+d.year)}"
             />
           {/each}
@@ -147,7 +157,7 @@
               stroke-width="0.4"
               fill="{d.total_front_page == "NA" 
               ? "#222222"
-              : "orange"}"
+              : "#eeeeee"}"
             />
         {/each}
         <text class="axis-label"
@@ -163,11 +173,12 @@
             cy="{yScale(d.count_by_year)}"
             r="3"
             stroke="#eeeeee"
-            stroke-width="{d.total_front_page !== "NA" && d.total_articles == 0
-                            ? 3 : 0.4}"
+            stroke-width="0.4"
             fill="{d.total_front_page == "NA" 
-            ? "#222222"
-            : d.total_articles == 0 ? "#222222" : "orange"}"
+                    ? "#222222"
+                    : "#eeeeee"}"
+            style="opacity: {d.total_front_page == "NA" ? 0.1 : 
+                              d.total_articles == 0 ? 1 : 0.1}"
           />
         {/each}
         <text class="axis-label"
@@ -183,7 +194,7 @@
           r="3"
           stroke="#eeeeee"
           stroke-width="0.4"
-          fill="{d.if_made_on_front == "FALSE" ? "#222222" : "orange"}"
+          fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
           fill-opacity="{d.made_front_count == "NA" ? 0 : 1}"
           stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
         />
@@ -195,24 +206,24 @@
         <rect
           x="{xScale(d.shooting_date)}"
           y="{yScale(d.total_words)}"
-          width="0.5"
+          width="1"
           height="{height - yScale(d.total_words) - margin.b}"
-          fill="orange"
+          fill="#eeeeee"
           fill-opacity="0.8"
         />
         {/each}
-        {#each data as d}
+        <!-- {#each data as d}
           <circle
             cx="{xScale(d.shooting_date)}"
             cy="{yScale(d.total_words)}"
             r="3"
             stroke="#eeeeee"
             stroke-width="0.4"
-            fill="orange"
+            fill="#eeeeee"
             fill-opacity="{d.made_front_count == "NA" ? 0 : 0.8}"
             stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
           />
-        {/each}
+        {/each} -->
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
@@ -226,7 +237,7 @@
           r="3"
           stroke="#eeeeee"
           stroke-width="{d.id === selected ? 3 : 0.4}"
-          fill="orange"
+          fill="#eeeeee"
           fill-opacity="{d.made_front_count == "NA" ? 0 : aScale(d.total_front_page)}"
           stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
         />
@@ -238,24 +249,24 @@
             <rect
               x="{xScale(d.shooting_date)}"
               y="{yScale(d.total_words)}"
-              width="0.5"
+              width="1"
               height="{height - yScale(d.total_words) - margin.b}"
-              fill="orange"
+              fill="{d.id === selected ? "orange" : "#eeeeee"}"
               fill-opacity="{d.id === 113 || d.id === selected ? 1 : 0.1}"
             />
           {/each}
-          {#each data as d}
+          <!-- {#each data as d}
             <circle
               cx="{xScale(d.shooting_date)}"
               cy="{yScale(d.total_words)}"
               r="3"
               stroke="#eeeeee"
               stroke-width="0.4"
-              fill="orange"
+              fill="#eeeeee"
               fill-opacity="{d.made_front_count == "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1}"
               stroke-opacity="{d.made_front_count == "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1}"
             />
-          {/each}
+          {/each} -->
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
@@ -267,10 +278,10 @@
           <rect
             x="{xScale(d.shooting_date)}"
             y="{yScale(d.total_words)}"
-            width="0.5"
+            width="1"
             height="{height - yScale(d.total_words) - margin.b}"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "orange"}"
-            fill-opacity="0.8"
+            fill="#eeeeee"
+            fill-opacity={d.if_made_on_front === "FALSE" ? 0.1 : 1}
           />
         {/each}
         {#each data as d}
@@ -280,7 +291,7 @@
             r="3"
             stroke="#eeeeee"
             stroke-width="0.4"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "orange"}"
+            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
             fill-opacity="{d.made_front_count == "NA" ? 0 : 0.8}"
             stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
           />
@@ -296,21 +307,21 @@
           <rect
             x="{xScale(d.shooting_date)}"
             y="{yScale(d.total_words)}"
-            width="0.5"
+            width="1"
             height="{height - yScale(d.total_words) - margin.b}"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "orange"}"
-            style="opacity: {d.made_front_count == "NA" ? 0 : aScale(d.total_front_page)}"
+            fill="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
+            style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.1}"
           />
         {/each}
         {#each data as d}
           <circle
             cx="{xScale(d.shooting_date)}"
             cy="{yScale(d.total_words)}"
-            r="3"
-            stroke="#eeeeee"
-            stroke-width="{d.made_front_count == "NA" ? 0 : d.id === 97 || d.id === selected ? 3 : 0.4}"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "orange"}"
-            style="opacity: {d.made_front_count == "NA" ? 0 : d.id === 97 || d.id === selected ? 1 : aScale(d.total_front_page)}"
+            r="{rScale(d.total_front_page)}"
+            stroke="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
+            stroke-width="0.4"
+            fill="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
+            style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.05}"
           />
         {/each}
         <text class="axis-label"
@@ -380,12 +391,18 @@
     </p>
   </section>
   <section data-section="8">
-    <p>
-      The shooting that generated the most articles on the front page was Marjory Stoneman Douglas High School shooting in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
-    </p>
-    <p>
-      The shooting of your choice, <span>{selectedD.case}</span>, had a total of {selectedD.total_front_page} articles on the front page.
-    </p>
+      {#if selectedD.id === 97}
+      <p>
+        The shooting that generated the most articles on the front page was the one you chose, <span>Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+      </p>
+      {:else}
+        <p>
+          The shooting that generated the most articles on the front page was Marjory Stoneman Douglas High School shooting in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+        </p>
+        <p>
+          The shooting you chose, <span>{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had a total of ${selectedD.total_front_page} articles on the front page`}.
+        </p>
+      {/if}
   </section>
 </div>
 </Scroller>

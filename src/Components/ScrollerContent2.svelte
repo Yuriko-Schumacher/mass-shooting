@@ -50,9 +50,9 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          stroke="orange"
+          stroke="#eeeeee"
           stroke-width="0.4"
-          fill="orange"
+          fill="#eeeeee"
           fill-opacity="0.7"
         />
         <text
@@ -61,7 +61,7 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.total_words > 50000 ? 1 : 0}"
+          style="opacity: {d.total_words > 50000 ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
@@ -77,7 +77,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.id === 91 ? 1 : 0.1}"
         />
         <text
@@ -86,7 +86,7 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.total_words < 50000 ? 0 : d.id == 91 ? 1 : 0.1}"
+          style="opacity: {d.total_words < 50000 ? 0 : d.id == 91 ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
@@ -102,7 +102,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.id === 91 || d.id === 81 || d.id === 42 ? 1 : 0.1}"
         />
         <text
@@ -111,7 +111,7 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.total_words < 50000 ? 0 : d.id === 91 || d.id === 81 || d.id === 42 ? 1 : 0.1}"
+          style="opacity: {d.total_words < 50000 ? 0 : d.id === 91 || d.id === 81 || d.id === 42 ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
@@ -127,7 +127,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.city == "Newtown" || d.city == "El Paso" || d.city == "Parkland" || d.city == "Littleton" || d.city == "Charleston" || d.city == "San Bernardino" || d.city == "Dayton" || d.city == "Tucson" ? 1 : 0.1}"
         />
         <text
@@ -136,7 +136,7 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.total_words < 50000 ? 0 : d.city == "Newtown" || d.city == "El Paso" || d.city == "Parkland" || d.city == "Littleton" || d.city == "Charleston" || d.city == "San Bernardino" || d.city == "Dayton" || d.city == "Tucson" ? 1 : 0.1}"
+          style="opacity: {d.total_words < 50000 ? 0 : d.city == "Newtown" || d.city == "El Paso" || d.city == "Parkland" || d.city == "Littleton" || d.city == "Charleston" || d.city == "San Bernardino" || d.city == "Dayton" || d.city == "Tucson" ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
@@ -160,7 +160,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="{d.id === selected ? "orange" : "#eeeeee"}"
           style="opacity: {d.id == selected ? 1 : 0.1}"
         />
         <text
@@ -175,6 +175,7 @@
         <text class="axis-label"
         x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
       </g>
+    <!-- SCHOOL -->
     {:else if index == 6}
       <g>
         <text class="axis-label"
@@ -185,7 +186,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.location_new === "School" ? 1 : 0.1}"
         />
         <text
@@ -194,12 +195,13 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.location_new === "School" && (d.total_words > 10000 || d.fatalities > 6) ? 1 : 0}"
+          style="opacity: {d.location_new === "School" && (d.total_words > 10000 || d.fatalities > 6) ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
         x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
       </g>
+    <!-- WORKPLACE -->
     {:else if index == 7}
       <g>
         <text class="axis-label"
@@ -210,7 +212,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.location_new === "Workplace" ? 1 : 0.1}"
         />
         <text
@@ -219,12 +221,13 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {d.location_new === "Workplace" && (d.total_words > 10000 || d.fatalities > 9) ? 1 : 0}"
+          style="opacity: {d.location_new === "Workplace" && (d.total_words > 10000 || d.fatalities > 9) ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
         x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
       </g>
+    <!-- RETAIL/RESTAURANT/BAR/NIGHTCLUB -->
     {:else if index == 8}
       <g>
         <text class="axis-label"
@@ -235,7 +238,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="#eeeeee"
           style="opacity: {d.location_new === "Restaurant/bar/nightclub" || d.location_new === "Retail" ? 1 : 0.1}"
         />
         <text
@@ -244,7 +247,7 @@
             ? xScale(d.fatalities) - 65
             : xScale(d.fatalities) + 10}"
           y="{d.city == "Dayton" ? yScale(d.total_words) + 15 : yScale(d.total_words) + 5}"
-          style="opacity: {(d.location_new === "Restaurant/bar/nightclub" || d.location_new === "Retail") && (d.total_words > 10000 || d.fatalities > 9) ? 1 : 0}"
+          style="opacity: {(d.location_new === "Restaurant/bar/nightclub" || d.location_new === "Retail") && (d.total_words > 10000 || d.fatalities > 9) ? 0.3 : 0}"
         >{d.city}</text>
         {/each}
         <text class="axis-label"
@@ -260,7 +263,7 @@
           cx="{xScale(d.fatalities)}"
           cy="{yScale(d.total_words)}"
           r="3"
-          fill="orange"
+          fill="{d.id === selected ? "orange" : "#eeeeee"}"
           style="opacity: {d.id === selected ? 1 : 0.1}"
         />
         <text

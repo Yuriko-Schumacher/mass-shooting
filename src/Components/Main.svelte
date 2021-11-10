@@ -87,6 +87,15 @@
 
 <ScrollerContent2 data={data} selected={selectedId}/>
 
+<div>
+  <p>Change your selection</p>
+  <select bind:value={selectedValue} on:change={selectShooting}>
+    {#each filteredD as d}
+      <option value={d}>{d.case}</option>
+    {/each}
+  </select>
+</div>
+
 <article>
   <h3>
     Is it who were the shooters? Or who were the victims?
