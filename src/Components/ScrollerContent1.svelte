@@ -120,7 +120,7 @@
               stroke="{d.id === selected ? "orange" : "#eeeeee"}"
               stroke-width="0.4"
               fill="{d.id === selected ? "orange" : "#eeeeee"}"
-              fill-opacity="{aScale(+d.year)}"
+              fill-opacity="{d.id === selected ? 1 : aScale(+d.year)}"
             />
           {/each}
         <text class="axis-label"
