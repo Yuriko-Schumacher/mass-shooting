@@ -393,7 +393,7 @@
   .axis-label, .label {
     fill: #eeeeee;
     font-size: 12px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serifl
+    font-family: 'Fira Sans Condensed', sans-serif;
   }
 
   .axis-label {

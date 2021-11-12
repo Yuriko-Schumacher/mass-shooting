@@ -348,7 +348,7 @@
       Mass shootings have been more frequent in recent years. In 2018, there were 12 incidents including the high school shooting in Parkland, Fla. that killed 17 students and adults. There were 11 in 2017, including the massacre in Las Vegas, Nevada that killed 58 concertgoers and injured 546, by far the deadliest mass shooting in U.S. history.
     </p>
     <p>
-      The shooting you thought of first, <span>{selectedD.case}</span>, happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. {selectedD.fatalities} people were killed and {selectedD.injured} others were injured.
+      The shooting you thought of first, <span class="selected">{selectedD.case}</span>, happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. It was one of the XXX shootings that year.
     </p>
   </section>
   <section data-section="2">
@@ -369,7 +369,7 @@
   </section>
   <section data-section="4">
     <p>
-      This project found no articles in The New York Times print edition about these three shootings: Atlantis Plastics shooting in Henderson, Kentucky in 2008 where six people were killed by an employee at the factory. Another is Trestle Trail bridge shooting in Menasha, Wisconsin in 2015 and a hotel bar shooting in State College, Pennsylvania in 2019.
+      This project found no articles in The New York Times print edition about these three shootings: <span class="highlighted">Atlantis Plastics shooting</span> in Henderson, Kentucky in 2008 where six people were killed by an employee at the factory. Another is the <span class="highlighted">Trestle Trail bridge shooting</span> in Menasha, Wisconsin in 2015, and the <span class="highlighted">hotel bar shooting</span> in State College, Pennsylvania in 2019.
     </p>
   </section>
   <section data-section="5">
@@ -378,12 +378,19 @@
     </p>
   </section>
   <section data-section="6">
-    <p>
-      The one in El Paso, Texas in 2019, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
-    </p>    
-    <p>
-      The shooting you chose, <span>{selectedD.case}</span>, was covered with a total of {selectedD.total_words} words.
-    </p>
+    {#if selectedD.id === 113}
+      <p>
+        The <span class="selected">{selectedD.case}</span> in Texas in 2019, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
+      </p>    
+      <p>It was also the one you remembered the most.</p>
+    {:else}
+      <p>
+        The <span class="highlighted">one in El Paso, Texas in 2019</span>, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
+      </p>    
+      <p>
+        The shooting you chose, <span class="selected">{selectedD.case}</span>, was covered with a total of {selectedD.total_words} words.
+      </p>
+    {/if}
   </section>
   <section data-section="7">
     <p>
@@ -393,14 +400,14 @@
   <section data-section="8">
       {#if selectedD.id === 97}
       <p>
-        The shooting that generated the most articles on the front page was the one you chose, <span>Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+        The shooting that generated the most articles on the front page was the one you chose, <span class="selected">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
       </p>
       {:else}
         <p>
-          The shooting that generated the most articles on the front page was Marjory Stoneman Douglas High School shooting in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+          The shooting that generated the most articles on the front page was <span class="highlighted">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
         </p>
         <p>
-          The shooting you chose, <span>{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had a total of ${selectedD.total_front_page} articles on the front page`}.
+          The shooting you chose, <span class="selected">{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had a total of ${selectedD.total_front_page} articles on the front page`}.
         </p>
       {/if}
   </section>
@@ -430,14 +437,22 @@
   .axis-label {
     fill: #eeeeee;
     font-size: 12px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Fira Sans Condensed', sans-serif;
     opacity: 0.5;
     font-style: italic
   }
 
   span {
+    padding: 0 0.3em;
+  }
+
+  .selected {
     color: white;
     background: rgba(255, 165, 0, 0.8);
-    padding: 0 0.3em;
+  }
+
+  .highlighted {
+    color: #222222;
+    background: rgb(238, 238, 238);
   }
 </style>

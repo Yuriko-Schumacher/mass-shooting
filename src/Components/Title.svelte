@@ -6,11 +6,6 @@
 </article>
 
 <style>
-  h1 {
-    font-size: 2.5em;
-    line-height: 1.2;
-  }
-
   article {
     text-align: center;
     margin: 5em auto;

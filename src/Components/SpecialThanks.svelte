@@ -8,7 +8,6 @@
   div {
     background: #222222;
     color: #eeeeee;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 0.8em;
     text-align: center;
     min-height: 50px;
