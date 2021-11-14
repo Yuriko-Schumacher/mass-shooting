@@ -10,9 +10,12 @@
   console.log(data)
   $: selectedD = data.filter(d => d.id === selected)[0]
 
+  const format = d3.format(',')
+
   const margin = { t: 25, r: 0, b: 50, l: 50 }
-  const width = 550;
-  let height = 250;
+  const width = window.innerWidth * 0.9 * 0.6;
+  const maxHeight = window.innerHeight - 300;
+  let height = width / 3 > maxHeight ? maxHeight : width / 3;
 
   let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
@@ -34,10 +37,10 @@
 
   let rScale= d3.scaleSqrt()
       .domain([0, 28])
-      .range([0, 10])
+      .range([3, 10])
 
   $: if (index < 5) {
-    height = 250
+    height = width / 3 > maxHeight ? maxHeight : width / 3;
     innerHeight = height - margin.t - margin.b;
 
     domain = [...Array(42).keys()].map((d) => d + 1981);
@@ -67,7 +70,7 @@
   //       .range([height - margin.b, margin.t]);
   // } 
   else if (index >= 5) {
-    height = 400
+    height = width / 2 > maxHeight ? maxHeight : width / 2;
     innerHeight = height - margin.t - margin.b;
 
     let parseTime = d3.timeParse("%m/%d/%y")
@@ -87,7 +90,7 @@
 
 </script>
 
-<Scroller top="{0.3}" bottom="{0.7}" bind:index bind:offset bind:progress bind:count>
+<Scroller top="{0.3}" bottom="{0.9}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
     {#if index == 0}
@@ -99,7 +102,7 @@
             <circle
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
-              r="3"
+              r="{xScale.bandwidth() - height / 80}"
               stroke="#eeeeee"
               stroke-width="0.4"
               fill="#eeeeee"
@@ -116,7 +119,7 @@
             <circle
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
-              r="3"
+              r="{xScale.bandwidth() - height / 80}"
               stroke="{d.id === selected ? "orange" : "#eeeeee"}"
               stroke-width="0.4"
               fill="{d.id === selected ? "orange" : "#eeeeee"}"
@@ -134,7 +137,7 @@
             <circle
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
-              r="3"
+              r="{xScale.bandwidth() - height / 80}"
               stroke="#eeeeee"
               stroke-width="0.4"
               fill="#eeeeee"
@@ -152,7 +155,7 @@
             <circle
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
-              r="3"
+              r="{xScale.bandwidth() - height / 80}"
               stroke="#eeeeee"
               stroke-width="0.4"
               fill="{d.total_front_page == "NA" 
@@ -171,7 +174,7 @@
           <circle
             cx="{xScale(+d.year)}"
             cy="{yScale(d.count_by_year)}"
-            r="3"
+            r="{xScale.bandwidth() - height / 80}"
             stroke="#eeeeee"
             stroke-width="0.4"
             fill="{d.total_front_page == "NA" 
@@ -283,12 +286,10 @@
             fill="#eeeeee"
             fill-opacity={d.if_made_on_front === "FALSE" ? 0.1 : 1}
           />
-        {/each}
-        {#each data as d}
           <circle
             cx="{xScale(d.shooting_date)}"
             cy="{yScale(d.total_words)}"
-            r="3"
+            r="{rScale(d.total_front_page)}"
             stroke="#eeeeee"
             stroke-width="0.4"
             fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
@@ -309,16 +310,14 @@
             y="{yScale(d.total_words)}"
             width="1"
             height="{height - yScale(d.total_words) - margin.b}"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
+            fill="{d.id === selected ? "orange" : "#eeeeee"}"
             style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.1}"
           />
-        {/each}
-        {#each data as d}
           <circle
             cx="{xScale(d.shooting_date)}"
             cy="{yScale(d.total_words)}"
             r="{rScale(d.total_front_page)}"
-            stroke="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
+            stroke="{d.id === selected ? "orange" : "#eeeeee"}"
             stroke-width="0.4"
             fill="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
             style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.05}"
@@ -388,7 +387,7 @@
         The <span class="highlighted">one in El Paso, Texas in 2019</span>, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
       </p>    
       <p>
-        The shooting you chose, <span class="selected">{selectedD.case}</span>, was covered with a total of {selectedD.total_words} words.
+        The shooting you chose, <span class="selected">{selectedD.case}</span>, was covered with a total of {format(selectedD.total_words)} words.
       </p>
     {/if}
   </section>
@@ -407,7 +406,7 @@
           The shooting that generated the most articles on the front page was <span class="highlighted">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
         </p>
         <p>
-          The shooting you chose, <span class="selected">{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had a total of ${selectedD.total_front_page} articles on the front page`}.
+          The shooting you chose, <span class="selected">{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had ${selectedD.total_front_page} article${selectedD.total_front_page == 1 ? "" : "s"} on the front page`}.
         </p>
       {/if}
   </section>

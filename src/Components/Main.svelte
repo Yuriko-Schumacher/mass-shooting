@@ -67,15 +67,15 @@ import { onMount } from 'svelte';
       Tell me one tragedy you remember the most. I picked Las Vegas Strip massacre. You can keep it as Las Vegas too.
     </p>
     <div class="selections">
-      <div class="selection active" data-id="91" on:click={selectShootingButton}>
+      <button type="button" class="selection active" data-id="91" on:click={selectShootingButton}>
         Las Vegas Strip massacre
-      </div>
-      <div class="selection" data-id="113" on:click={selectShootingButton}>
+      </button>
+      <button type="button" class="selection" data-id="113" on:click={selectShootingButton}>
         El Paso Walmart shooting
-      </div>
-      <div class="selection" data-id="27" on:click={selectShootingButton}>
+      </button>
+      <button type="button" class="selection" data-id="27" on:click={selectShootingButton}>
         Columbine High School massacre
-      </div>
+      </button>
     </div>
     <div class="selection-dropdown">
       Another one:
@@ -100,7 +100,7 @@ import { onMount } from 'svelte';
 
 <div class="scroller-container">
   {#if y > 1500}
-    <div class="navbar">
+    <div class="sticky-dropdown">
       You chose:
       <select bind:value={selectedValue} on:change={selectShootingDropdown}>
         {#each filteredD as d}
@@ -121,7 +121,7 @@ import { onMount } from 'svelte';
 </article>
 
 <div class="scroller-container">
-    <div class="navbar">
+    <div class="sticky-dropdown">
       You chose:
       <select bind:value={selectedValue} on:change={selectShootingDropdown}>
         {#each filteredD as d}
@@ -143,10 +143,16 @@ import { onMount } from 'svelte';
   }
   
   .selection-container {
-    font-family: 'Fira Sans Condensed', sans-serif;
     line-height: 1.2;
     margin: 5em auto;
     text-align: center;
+  }
+
+  .selection-container * {
+    font-family: 'Fira Sans Condensed', sans-serif;
+    font-size: 18px;
+    background: #222222;
+    color: #eeeeee;
   }
 
   .selections {
@@ -162,21 +168,21 @@ import { onMount } from 'svelte';
     display: flex;
     align-items: center;
     cursor: pointer;
-    outline: 1px solid #eeeeee;
+    border: 1px solid #eeeeee;
   }
 
   .selection:hover {
     color: white;
-    outline: 1px solid rgba(255, 165, 0, 0.8);
+    border: 1px solid rgba(255, 165, 0, 0.8);
     background: rgba(255, 165, 0, 0.8);
     transition: all 0.2s ease;
   }
 
   .active {
     color: white;
-    outline: 1px solid rgba(255, 165, 0, 0.8);
+    border: 1px solid rgba(255, 165, 0, 0.8);
     background: rgba(255, 165, 0, 0.8);
-    cursor: unset;
+    cursor: default;
   }
 
   .selection-dropdown {
@@ -202,7 +208,7 @@ import { onMount } from 'svelte';
 
   select:focus {
     background: #222222;
-    outline: 0px;
+    outline: 1px solid #eeeeee;
   }
 
   option {
@@ -213,13 +219,13 @@ import { onMount } from 'svelte';
     position: relative;
   }
 
-  .navbar{
+  .sticky-dropdown {
     height: 100px;
     width: 550px;
     font-family: 'Fira Sans Condensed', sans-serif;
     background: #222222;
     position: sticky;
-    padding: 2em 0 0 0;
+    padding: 30px 0 0 0;
     top: 0;
     left: 0;
     z-index: 999;

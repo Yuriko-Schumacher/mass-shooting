@@ -11,9 +11,12 @@
 
   $: selectedD = data.filter(d => d.id === selected)[0]
 
-  const margin = { t: 15, r: 0, b: 50, l: 0 }
-  const width = 550;
-  const height = 550;
+  const format = d3.format(",");
+
+  const margin = { t: 15, r: 150, b: 100, l: 15 }
+  const width = window.innerWidth * 0.9 * 0.6;
+  const maxHeight = window.innerHeight - 200;
+  let height = width / 1.3 > maxHeight ? maxHeight : width / 1.3;
 
   let xScale = d3.scaleLinear()
 		.domain([0, d3.max(filteredD, (d) => d.fatalities) + 1])
@@ -37,7 +40,7 @@
 
 </script>
 
-<Scroller top="{0.3}" bottom="{0.8}" bind:index bind:offset bind:progress bind:count>
+<Scroller top="{0.2}" bottom="{1}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
     {#if index == 0 || index == 5}
@@ -315,7 +318,7 @@
       Given the number of victims, those above the line were reported more, while those below were reported less, compared to other shootings.
     </p>
     <p>
-      The shooting of your choice, <span>{selectedD.case}</span>, had a total of {selectedD.fatalities} fatalities and generated {selectedD.total_words} words. It was {selectedD.total_words / selectedD.fatalities > 130000 / 58 ? "above" : "below"} the line.
+      The shooting of your choice, <span>{selectedD.case}</span>, had a total of {selectedD.fatalities} fatalities and generated {format(selectedD.total_words)} words. It was {selectedD.total_words / selectedD.fatalities > 130000 / 58 ? "above" : "below"} the line.
     </p>
   </section>
   <section data-section="5">
@@ -358,7 +361,7 @@
   </section>
   <section data-section="9">
     <p>
-      The shooting of your choice, <span>{selectedD.case}</span>, happened in {selectedD.location_new}.
+      The shooting you chose, <span>{selectedD.case}</span>, happened in {selectedD.location_new}.
     </p>
     <p>
       Choose other shooting locations to see which ones attracted more coverage by The Times. (In production)

@@ -6,8 +6,9 @@
 
 <style>
   div {
-    background: #222222;
-    color: #eeeeee;
+    max-width: 90%;
+    margin: 0 auto;
+    font-family: 'Fira Sans Condensed', sans-serif;
     font-size: 0.8em;
     text-align: center;
     min-height: 50px;
@@ -15,14 +16,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-
-  a:link, a:visited {
-    color: orange;
-  }
-
-  a:hover {
-    color: rgb(255, 217, 0);
-    transition: all 0.4s ease;
+    border-bottom: 1px solid #eeeeee;
   }
 </style>

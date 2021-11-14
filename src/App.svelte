@@ -33,10 +33,11 @@
 <Footer />
 
 <style>
+
 	main {
-		background: var(--bg-gray);
-		color: var(--font-white);
-		padding: 10em 5em;
+		padding: 10em 0;
+    width: 90%;
+    margin: 0 auto;
 	}
 
 </style>
