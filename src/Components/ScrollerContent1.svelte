@@ -39,7 +39,7 @@
       .domain([0, 28])
       .range([3, 10])
 
-  $: if (index < 5) {
+  $: if (index < 3) {
     height = width / 3 > maxHeight ? maxHeight : width / 3;
     innerHeight = height - margin.t - margin.b;
 
@@ -58,18 +58,7 @@
       .domain([1982, 2021])
       .range([0, 1])
   } 
-  // else if (index == 6) {
-  //   domain = [...Array(42).keys()].map((d) => d + 1981);
-  //   xScale = d3.scaleBand()
-  //         .domain(domain)
-  //         .range([margin.l, width - margin.r])
-  //         .paddingInner(0.5);
-
-  //   yScale = d3.scaleLinear()
-  //       .domain([0, 13])
-  //       .range([height - margin.b, margin.t]);
-  // } 
-  else if (index >= 5) {
+  else if (index >= 3) {
     height = width / 2 > maxHeight ? maxHeight : width / 2;
     innerHeight = height - margin.t - margin.b;
 
@@ -120,10 +109,10 @@
               cx="{xScale(+d.year)}"
               cy="{yScale(d.count_by_year)}"
               r="{xScale.bandwidth() - height / 80}"
-              stroke="{d.id === selected ? "orange" : "#eeeeee"}"
+              stroke="#eeeeee"
               stroke-width="0.4"
               fill="{d.id === selected ? "orange" : "#eeeeee"}"
-              fill-opacity="{d.id === selected ? 1 : aScale(+d.year)}"
+              style="opacity: {d.id === selected ? 1 : 0.1}"
             />
           {/each}
         <text class="axis-label"
@@ -140,68 +129,17 @@
               r="{xScale.bandwidth() - height / 80}"
               stroke="#eeeeee"
               stroke-width="0.4"
-              fill="#eeeeee"
-              fill-opacity="{aScale(+d.year)}"
+              fill="{d.total_front_page == "NA" 
+                      ? "#222222"
+                      : "#eeeeee"}"
+              style="opacity: {d.total_front_page == "NA" ? 0.1 : 
+                                d.total_articles == 0 ? 1 : 0.1}"
             />
           {/each}
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 35}>Year</text>
       </g>
     {:else if index == 3}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 20}) rotate(-90)`}>Count</text>
-        {#each data as d}
-            <circle
-              cx="{xScale(+d.year)}"
-              cy="{yScale(d.count_by_year)}"
-              r="{xScale.bandwidth() - height / 80}"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="{d.total_front_page == "NA" 
-              ? "#222222"
-              : "#eeeeee"}"
-            />
-        {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 35}>Year</text>
-      </g>
-    {:else if index == 4}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 20}) rotate(-90)`}>Count</text>
-        {#each data as d}
-          <circle
-            cx="{xScale(+d.year)}"
-            cy="{yScale(d.count_by_year)}"
-            r="{xScale.bandwidth() - height / 80}"
-            stroke="#eeeeee"
-            stroke-width="0.4"
-            fill="{d.total_front_page == "NA" 
-                    ? "#222222"
-                    : "#eeeeee"}"
-            style="opacity: {d.total_front_page == "NA" ? 0.1 : 
-                              d.total_articles == 0 ? 1 : 0.1}"
-          />
-        {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 35}>Year</text>
-      </g>
-    {:else if index == 5}
-      <!-- {#each data as d}
-        <circle
-          cx="{d.if_made_on_front == "FALSE"
-                ? xScale(1997 - Math.floor((d.made_front_count - 1) / 12))
-                : xScale(2003 + Math.floor((d.made_front_count - 1) / 12))}"
-          cy="{yScale((d.made_front_count - 1) % 12)}"
-          r="3"
-          stroke="#eeeeee"
-          stroke-width="0.4"
-          fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
-          fill-opacity="{d.made_front_count == "NA" ? 0 : 1}"
-          stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
-        />
-      {/each} -->
       <g>
         <text class="axis-label"
         transform={`translate(30, ${innerHeight / 2 + 60}) rotate(-90)`}>Number of words</text>
@@ -215,36 +153,10 @@
           fill-opacity="0.8"
         />
         {/each}
-        <!-- {#each data as d}
-          <circle
-            cx="{xScale(d.shooting_date)}"
-            cy="{yScale(d.total_words)}"
-            r="3"
-            stroke="#eeeeee"
-            stroke-width="0.4"
-            fill="#eeeeee"
-            fill-opacity="{d.made_front_count == "NA" ? 0 : 0.8}"
-            stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
-          />
-        {/each} -->
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
-    {:else if index == 6}
-      <!-- {#each data as d}
-        <circle
-          cx="{d.if_made_on_front == "FALSE"
-                ? xScale(1997 - Math.floor((d.made_front_count - 1) / 12))
-                : xScale(2003 + Math.floor((d.made_front_count - 1) / 12))}"
-          cy="{yScale((d.made_front_count - 1) % 12)}"
-          r="3"
-          stroke="#eeeeee"
-          stroke-width="{d.id === selected ? 3 : 0.4}"
-          fill="#eeeeee"
-          fill-opacity="{d.made_front_count == "NA" ? 0 : aScale(d.total_front_page)}"
-          stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
-        />
-      {/each} -->
+    {:else if index == 4}
       <g>
         <text class="axis-label"
         transform={`translate(30, ${innerHeight / 2 + 60}) rotate(-90)`}>Number of words</text>
@@ -258,22 +170,10 @@
               fill-opacity="{d.id === 113 || d.id === selected ? 1 : 0.1}"
             />
           {/each}
-          <!-- {#each data as d}
-            <circle
-              cx="{xScale(d.shooting_date)}"
-              cy="{yScale(d.total_words)}"
-              r="3"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="#eeeeee"
-              fill-opacity="{d.made_front_count == "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1}"
-              stroke-opacity="{d.made_front_count == "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1}"
-            />
-          {/each} -->
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
-    {:else if index == 7}
+    {:else if index == 5}
       <g>
         <text class="axis-label"
         transform={`translate(30, ${innerHeight / 2 + 60}) rotate(-90)`}>Number of words</text>
@@ -293,14 +193,14 @@
             stroke="#eeeeee"
             stroke-width="0.4"
             fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
-            fill-opacity="{d.made_front_count == "NA" ? 0 : 0.8}"
+            fill-opacity="{d.made_front_count == "FALSE" ? 0 : 0.8}"
             stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
           />
         {/each}
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
-    {:else if index == 8}
+    {:else if index == 6}
       <g>
         <text class="axis-label"
         transform={`translate(30, ${innerHeight / 2 + 60}) rotate(-90)`}>Number of words</text>
@@ -333,50 +233,25 @@
 <div slot="foreground" class="foreground">
   <section data-section="0">
     <p>
-      In the U.S., there have been at least 124 mass shootings since 1982, according to the Mother Jones’ mass shooting database. 
-    </p>
-    <p>
-      It defines a mass shooting as “indiscriminate rampages in public places resulting in four or more victims killed” and excludes “shootings stemming from more conventionally motivated crimes such as armed robbery or gang violence.”
-    </p>
-    <p>
-      The definition of a mass shooting varies between research institutions and media outlets. I’m using Mother Jones’ database because their definition allows more in-depth investigation about a distinct incident.
+      Mass shootings have been more frequent in recent years. In 2018, there were 12 incidents including the high school shooting in Parkland, Fla. that killed 17 students and adults. There were 11 in 2017, including the massacre in Las Vegas, Nevada that killed 58 concertgoers and injured 546, by far the deadliest mass shooting in U.S. history.
     </p>
   </section>
   <section data-section="1">
     <p>
-      Mass shootings have been more frequent in recent years. In 2018, there were 12 incidents including the high school shooting in Parkland, Fla. that killed 17 students and adults. There were 11 in 2017, including the massacre in Las Vegas, Nevada that killed 58 concertgoers and injured 546, by far the deadliest mass shooting in U.S. history.
-    </p>
-    <p>
-      The shooting you thought of first, <span class="selected">{selectedD.case}</span>, happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. It was one of the XXX shootings that year.
+      The shooting you remember the most, <span class="selected">{selectedD.case}</span>, happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. It was one of the XXX shootings that year.
     </p>
   </section>
   <section data-section="2">
     <p>
-      I tracked coverage about each incident in the print edition of The New York Times since 1982. In order to compare the amount of coverage over time, I counted the coverage for a two weeks period for each shooting.
-    </p>
-    <p>
-      Beginning on the day the incident happened and for the subsequent two weeks, I tallied the number of articles about the shooting and the ones in which that shooting was mentioned, as well as the number of words of articles about the shooting and where they appeared in the paper.
-    </p>
-    <p>
-      These metrics allowed me to measure media attention and compare between shootings.
+      This project found no articles in The New York Times print edition about these three shootings: <span class="highlighted">Atlantis Plastics shooting</span> in Henderson, Kentucky in 2008 where six people were killed by an employee at the factory. Another is the <span class="highlighted">Trestle Trail bridge shooting</span> in Menasha, Wisconsin in 2015, and the <span class="highlighted">hotel bar shooting</span> in State College, Pennsylvania in 2019.
     </p>
   </section>
   <section data-section="3">
     <p>
-      Out of 124 shootings, as of November 8th, I completed filtering 94 shootings from 1982 to 2015, 2019 and 2020. In missing years, I also covered one in Orlando in 2016, Las Vegas in 2017, Parkland in 2018.
-    </p>
-  </section>
-  <section data-section="4">
-    <p>
-      This project found no articles in The New York Times print edition about these three shootings: <span class="highlighted">Atlantis Plastics shooting</span> in Henderson, Kentucky in 2008 where six people were killed by an employee at the factory. Another is the <span class="highlighted">Trestle Trail bridge shooting</span> in Menasha, Wisconsin in 2015, and the <span class="highlighted">hotel bar shooting</span> in State College, Pennsylvania in 2019.
-    </p>
-  </section>
-  <section data-section="5">
-    <p>
       This chart shows the number of total words in NYT articles about 94 shootings since 1982. Increasingly widely-reported shootings have happened in recent years.
     </p>
   </section>
-  <section data-section="6">
+  <section data-section="4">
     {#if selectedD.id === 113}
       <p>
         The <span class="selected">{selectedD.case}</span> in Texas in 2019, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
@@ -391,12 +266,12 @@
       </p>
     {/if}
   </section>
-  <section data-section="7">
+  <section data-section="5">
     <p>
       Of all shootings that had at least one article, 52 made it to the front page while 38 didn’t.
     </p>
   </section>
-  <section data-section="8">
+  <section data-section="6">
       {#if selectedD.id === 97}
       <p>
         The shooting that generated the most articles on the front page was the one you chose, <span class="selected">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 

@@ -1,9 +1,9 @@
 <script>
   import * as d3 from 'd3';
+  import PaperImage from './PaperImage.svelte'
   import ScrollerContent1 from './ScrollerContent1.svelte'
   import ScrollerContent2 from './ScrollerContent2.svelte'
   import Content3 from './Content3.svelte'
-import { onMount } from 'svelte';
 
   export let data;
   
@@ -53,53 +53,73 @@ import { onMount } from 'svelte';
     selectedD = data.filter(d => d.id == selectedId)[0];
     selectedValue = selectedD;
   }
-
-  let y;
 </script>
 
 <article>
   <p>
     When you hear the words “mass shooting,” which one comes to your mind first? America’s deadliest shooting in Las Vegas in 2017? The recent one in Atlanta, or one of the school shootings? Or one that happened where you live or one that affected you or your family, friends?
   </p>
+</article>
 
-  <div class="selection-container">
-    <p>
-      Tell me one tragedy you remember the most. I picked Las Vegas Strip massacre. You can keep it as Las Vegas too.
-    </p>
-    <div class="selections">
-      <button type="button" class="selection active" data-id="91" on:click={selectShootingButton}>
-        Las Vegas Strip massacre
-      </button>
-      <button type="button" class="selection" data-id="113" on:click={selectShootingButton}>
-        El Paso Walmart shooting
-      </button>
-      <button type="button" class="selection" data-id="27" on:click={selectShootingButton}>
-        Columbine High School massacre
-      </button>
+  <div class="selection-section">
+    <PaperImage bind:data={selectedD}/>
+    <div class="selection-container">
+      <p>
+        Tell me one tragedy you remember the most. I picked Las Vegas Strip massacre. You can keep it as Las Vegas too.
+      </p>
+      <p>
+        The image on the left shows the copy of the NYT page with first major reports of your selected incident.
+      </p>
+      <div class="selections">
+        <button type="button" class="selection active" data-id="91" on:click={selectShootingButton}>
+          Las Vegas Strip massacre
+        </button>
+        <button type="button" class="selection" data-id="113" on:click={selectShootingButton}>
+          El Paso Walmart shooting
+        </button>
+        <button type="button" class="selection" data-id="27" on:click={selectShootingButton}>
+          Columbine High School massacre
+        </button>
+      </div>
+      <div class="selection-dropdown">
+        Another one:
+        <select bind:value={selectedValue} on:change={selectShootingDropdown}>
+          {#each dropdownD as d}
+            <option value={d}>{d.case} ({d.year})</option>
+          {/each}
+        </select>
+      </div>
+      <p>
+        {selectedD.case} happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. {selectedD.fatalities} people were killed and {selectedD.injured === 1 ? "another person was" : ""}{selectedD.injured === 1 ? "" : selectedD.injured}{selectedD.injured === 1 ? "" : " others were"} wounded.
+      </p>
     </div>
-    <div class="selection-dropdown">
-      Another one:
-      <select bind:value={selectedValue} on:change={selectShootingDropdown}>
-        {#each dropdownD as d}
-          <option value={d}>{d.case} ({d.year})</option>
-        {/each}
-      </select>
-    </div>
-    <p>
-      {selectedD.case} happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. {selectedD.fatalities} people were killed and {selectedD.injured === 1 ? "another person was" : ""}{selectedD.injured === 1 ? "" : selectedD.injured}{selectedD.injured === 1 ? "" : " others were"} wounded.
-    </p>
   </div>
-
-  <h2>
+  
+<article>
+  <h1>
     How much was the <span class="selected-shooting">{selectedD.case}</span> reported, compared to other shootings?
-  </h2>
+  </h1>
   <p>
     Some of these may have been more memorable because they were reported more widely than others. In fact, there has been a big difference in coverage of mass shootings. While all these incidents are horrific, some attracted more media attention than the others.
+  </p>
+  <p>
+    In the U.S., there have been at least 124 mass shootings since 1982, according to the <a href="https://www.motherjones.com/politics/2012/12/mass-shootings-mother-jones-full-data/" target="_blank">Mother Jones’ mass shooting database</a>. It defines a mass shooting as “indiscriminate rampages in public places resulting in four or more victims killed” and excludes “shootings stemming from more conventionally motivated crimes such as armed robbery or gang violence.”
+  </p>
+  <p>
+    The definition of a mass shooting varies between research institutions and media outlets. I’m using Mother Jones’ database because their definition allows more in-depth investigation about a distinct incident.
+  </p>
+  <p>
+    I tracked coverage about each incident in the print edition of The New York Times since 1982. In order to compare the amount of coverage over time, I counted the coverage for a two weeks period for each shooting.
+  </p>
+  <p>
+    Beginning on the day the incident happened and for the subsequent two weeks, I tallied the number of articles about the shooting and the ones in which that shooting was mentioned, as well as the number of words of articles about the shooting and where they appeared in the paper.
+  </p>
+  <p>
+    These metrics allowed me to measure media attention and compare between shootings.
   </p>
 </article>
 
 <div class="scroller-container">
-  {#if y > 1500}
     <div class="sticky-dropdown">
       You chose:
       <select bind:value={selectedValue} on:change={selectShootingDropdown}>
@@ -108,7 +128,6 @@ import { onMount } from 'svelte';
         {/each}
       </select>
     </div>
-  {/if}
 
 <ScrollerContent1 data={data} selected={selectedD.id}/>
 </div>
@@ -135,17 +154,22 @@ import { onMount } from 'svelte';
 
 <Content3 />
 
-<svelte:window bind:scrollY={y} />
-
 <style>
   article {
     margin: 10em auto;
   }
+
+  .selection-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+  }
   
   .selection-container {
     line-height: 1.2;
-    margin: 5em auto;
     text-align: center;
+    max-width: 500px;
   }
 
   .selection-container * {
