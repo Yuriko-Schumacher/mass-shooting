@@ -90,7 +90,12 @@
         </select>
       </div>
       <p>
-        {selectedD.case} happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. {selectedD.fatalities} people were killed and {selectedD.injured === 1 ? "another person was" : ""}{selectedD.injured === 1 ? "" : selectedD.injured}{selectedD.injured === 1 ? "" : " others were"} wounded.
+        {selectedD.case} happened in {selectedD.year} in {selectedD.city}, {selectedD.state}. {selectedD.fatalities} people were killed{selectedD.injured === 0 ? "." : ""}
+        {#if selectedD.injured === 0}
+        <span></span>
+        {:else}
+        and {selectedD.injured === 1 ? "another person was" : ""}{selectedD.injured === 1 ? "" : selectedD.injured}{selectedD.injured === 1 ? "" : " others were"} wounded.
+        {/if}
       </p>
     </div>
   </div>
