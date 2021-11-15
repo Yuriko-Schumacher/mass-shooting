@@ -13,7 +13,7 @@
     <p>Image is not available.</p>
   </div>
 {:else}
-  <img width="300" src={sourcePath} alt="Copy of the first major reporting of the selected shooting by The New York Times">
+  <img width="450" src={sourcePath} alt="Copy of the first major reporting of the selected shooting by The New York Times">
 {/if}
 </div>
 
@@ -25,8 +25,8 @@
 
   .placeholder {
     font-family: 'Fira Sans Condensed', sans-serif;
-    width: 300px;
-    height: 540px;
+    width: 450px;
+    height: 750px;
     background: rgba(128, 128, 128, 0.3);
     text-align: center;
     align-items: center;

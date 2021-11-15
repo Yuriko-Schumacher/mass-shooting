@@ -231,8 +231,9 @@
   }
 
   select:focus {
-    background: #222222;
-    outline: 1px solid #eeeeee;
+    color: white;
+    background: rgba(255, 165, 0, 0.8);
+    outline: 1px solid rgba(255, 165, 0, 0.8);;
   }
 
   option {
