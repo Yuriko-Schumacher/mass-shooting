@@ -180,7 +180,7 @@
           stroke-width="0.4"
           fill="#eeeeee"
         />
-        {#if d.total_words > 76000 || d.city == "Garden City" || d.city == "Blacksburg"}
+        {#if d.total_words > 80000 || d.city == "Garden City" || d.city == "Blacksburg"}
         <text
           class="text-label"
           x="{xScale(d.shooting_date) + 7}"

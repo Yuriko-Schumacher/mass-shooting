@@ -193,6 +193,7 @@
   .selection {
     width: 150px;
     height: 50px;
+    font-size: 0.9em;
     padding: 0.3em 0.4em;
     display: flex;
     align-items: center;
