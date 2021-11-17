@@ -13,10 +13,13 @@
 
   const format = d3.format(",");
 
-  const margin = { t: 15, r: 150, b: 100, l: 15 }
+  const margin = { t: 15, r: 150, b: 100, l: 70 }
   const width = window.innerWidth * 0.9 * 0.6;
   const maxHeight = window.innerHeight - 200;
   let height = width / 1.3 > maxHeight ? maxHeight : width / 1.3;
+  let hlineNumbers = [...Array(13).keys()].map((el) => el * 10000);
+  let vlineNumbers = [...Array(60).keys()];
+  let vlineNumbers2 = [...Array(12).keys()].map(el => el * 5 + 5)
 
   let xScale = d3.scaleLinear()
 		.domain([0, d3.max(filteredD, (d) => d.fatalities) + 1])
@@ -43,10 +46,55 @@
 <Scroller top="{0.2}" bottom="{1}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
+    {#each hlineNumbers as n}
+    <line 
+      x1="{xScale(0)}"
+      y1="{yScale(n)}"
+      x2="{xScale(60)}"
+      y2="{yScale(n)}"
+      stroke="gray"
+      stroke-opacity=0.5
+      stroke-width=0.5
+    />
+    <text
+      class="axis-ticks"
+      x="{xScale(0)}"
+      y="{yScale(n) + 5}"
+    >{format(n)}
+    </text>
+    {/each}
+    {#each vlineNumbers as n}
+    <line 
+      x1="{xScale(n)}"
+      y1="{yScale(0)}"
+      x2="{xScale(n)}"
+      y2="{yScale(127966)}"
+      stroke="gray"
+      stroke-opacity=0.5
+      stroke-width=0.3
+    />
+    {/each}
+    {#each vlineNumbers2 as n}
+    <text
+      class="axis-ticks"
+      x="{xScale(n)}"
+      y="{yScale(0) + 15}"
+    >{n}
+    </text>
+    <line 
+    x1="{xScale(n)}"
+    y1="{yScale(0)}"
+    x2="{xScale(n)}"
+    y2="{yScale(127966)}"
+    stroke="gray"
+    stroke-opacity=0.8
+    stroke-width=0.5
+  />
+    {/each}
     {#if index == 0 || index == 5}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -68,12 +116,12 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {:else if index == 1}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -93,12 +141,12 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {:else if index == 2}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -118,12 +166,12 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {:else if index == 3}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -143,12 +191,12 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {:else if index == 4}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         <line
           x1={xScale(1)}
@@ -176,13 +224,13 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     <!-- SCHOOL -->
     {:else if index == 6}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -202,13 +250,13 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     <!-- WORKPLACE -->
     {:else if index == 7}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -228,13 +276,13 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     <!-- RETAIL/RESTAURANT/BAR/NIGHTCLUB -->
     {:else if index == 8}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -254,12 +302,12 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {:else if index == 9}
       <g>
         <text class="axis-label"
-              transform={`translate(10, ${height / 2 + 50}) rotate(-90)`}
+              transform={`translate(20, ${height / 2 + 50}) rotate(-90)`}
         >Total number of words</text>
         {#each filteredD as d}
         <circle
@@ -279,7 +327,7 @@
         >{d.city}</text>
         {/each}
         <text class="axis-label"
-        x={width / 2 - 50} y={height - margin.b + 30}>Total fatal victims</text>
+        x={width / 2 - 50} y={height - margin.b + 45}>Total fatal victims</text>
       </g>
     {/if}
   </svg>
@@ -401,7 +449,16 @@
 
   .axis-label {
     opacity: 0.5;
+    font-size: 16px;
     font-style: italic
+  }
+
+  .axis-ticks {
+    fill: #eeeeee;
+    font-size: 12px;
+    font-family: 'Fira Sans Condensed', sans-serif;
+    opacity: 0.8;
+    text-anchor: end;
   }
 
   span {
