@@ -125,14 +125,14 @@
 </article>
 
 <div class="scroller-container">
-    <div class="sticky-dropdown">
+    <!-- <div class="sticky-dropdown">
       You chose:
       <select bind:value={selectedValue} on:change={selectShootingDropdown}>
         {#each filteredD as d}
           <option value={d}>{d.case} ({d.year})</option>
         {/each}
       </select>
-    </div>
+    </div> -->
 
 <ScrollerContent1 data={data} selected={selectedD.id}/>
 </div>
@@ -145,14 +145,14 @@
 </article>
 
 <div class="scroller-container">
-    <div class="sticky-dropdown">
+    <!-- <div class="sticky-dropdown">
       You chose:
       <select bind:value={selectedValue} on:change={selectShootingDropdown}>
         {#each filteredD as d}
           <option value={d}>{d.case} ({d.year})</option>
         {/each}
       </select>
-    </div>
+    </div> -->
 <ScrollerContent2 data={data} selected={selectedD.id}/>
 
 </div>

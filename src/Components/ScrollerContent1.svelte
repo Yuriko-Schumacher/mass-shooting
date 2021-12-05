@@ -1,13 +1,14 @@
 <script>
   import * as d3 from 'd3';
   import Scroller from "@sveltejs/svelte-scroller";
+  import { spring } from 'svelte/motion';
+  import { cubicOut } from 'svelte/easing';
 
   export let data;
   export let selected;
 
   let index, offset, progress, count, selectedD;
 
-  console.log(data)
   $: selectedD = data.filter(d => d.id === selected)[0]
 
   const parseTime = d3.timeParse("%m/%d/%y")
@@ -22,25 +23,48 @@
   const innerWidth = width - margin.l - margin.r;
 
   let domain = [...Array(42).keys()].map((d) => d + 1981);
-  let xScale = d3.scaleBand()
-        .domain(domain)
-        .range([margin.l, width - margin.r])
-        .paddingInner(0.5);
-
-  let yScale = d3.scaleLinear()
-      .domain([0, 13])
-      .range([height / 2 - margin.b, margin.t]);
-
-  let aScale = d3.scalePow()
-      .exponent(1)
-      .domain([1982, 2021])
-      .range([0, 1])
-
-  let rScale= d3.scaleSqrt()
+  let xScale, yScale;
+  const rScale= d3.scaleSqrt()
       .domain([0, 28])
       .range([3, 10])
 
-  let hlineNumbers = [...Array(13).keys()].map((el) => el * 10000);
+  const hlineNumbers = [...Array(13).keys()].map((el) => el * 10000);
+  let xAxisLabel, yAxisLabel;
+  let axisTitles = {
+    x: "",
+    y: ""
+  } 
+
+  const move = (cx, cy) => `transform: translate(${cx}px, ${cy}px`;
+  const colors = {
+    orange : {
+      r: 255,
+      g: 165,
+      b: 0
+    },
+    white : 238,
+    black : 34
+  }
+
+  let circles = spring(
+    data.map((d) => ({
+      cx: 0,
+      cy: 0,
+      cr: 0,
+      strokeWidth: 0,
+      opacity: 1,
+      r: 0,
+      g: 0,
+      b: 0,
+      id: d.id
+    })),
+    {
+      stiffness: 0.1,
+      damping: 0.9
+    }
+  );
+
+  let newCircles; 
 
   $: if (index < 3) {
     height = width / 2.5 > maxHeight ? maxHeight : width / 2.5;
@@ -56,16 +80,56 @@
         .domain([0, 13])
         .range([height - margin.b, margin.t]);
 
-    aScale = d3.scalePow()
-      .exponent(1)
-      .domain([1982, 2021])
-      .range([0, 1])
+    axisTitles = {
+      x: "Year",
+      y: "Total mass shootings"
+    }
+
+    const initialCircleSize = xScale.bandwidth() - height / 80
+
+      if (index === 0) {
+        newCircles = data.map((d) => ({
+          cx: xScale(+d.year),
+          cy: yScale(d.count_by_year),
+          cr: initialCircleSize,
+          strokeWidth: 0,
+          opacity: 1,
+          r: colors.white,
+          g: colors.white,
+          b: colors.white,
+          id: d.id
+        }))
+      } else if (index === 1) {
+        newCircles = data.map((d) => ({
+          cx: xScale(+d.year),
+          cy: yScale(d.count_by_year),
+          cr: initialCircleSize,
+          strokeWidth: 0,
+          opacity: d.id === selected ? 1 : 0.1,
+          r: d.id === selected ? colors.orange.r : colors.white,
+          g: d.id === selected ? colors.orange.g : colors.white,
+          b: d.id === selected ? colors.orange.b : colors.white,
+          id: d.id
+        }))
+      } else if (index === 2) {
+        newCircles = data.map((d) => ({
+          cx: xScale(+d.year),
+          cy: yScale(d.count_by_year),
+          cr: initialCircleSize,
+          strokeWidth: 0,
+          opacity: d.rank === "NA" ? 1 : 0.1,
+          r: colors.white,
+          g: colors.white,
+          b: colors.white,
+          id: d.id
+        }))
+      }
+      circles.set(newCircles)
   } 
   else if (index >= 3) {
     height = width / 1.5 > maxHeight ? maxHeight : width / 1.5;
     innerHeight = height - margin.t - margin.b;
 
-    let parseTime = d3.timeParse("%m/%d/%y")
     xScale = d3.scaleTime()
       .domain([parseTime("01/01/81"), parseTime("12/31/21")])
       .range([margin.l, width - margin.r]);
@@ -75,9 +139,77 @@
       .domain([0, d3.max(data, (d) => +d.total_words)])
       .range([height - margin.b, margin.t]);
 
-    aScale = d3.scaleLinear()
-      .domain([0, 28])
-      .range([0, 1])
+    axisTitles = (index == 3) ? {
+      x: "",
+      y: ""
+    }
+    : {
+      x: "Date",
+      y: "Total number of words"
+    }
+
+    if (index === 3) {
+      newCircles = data.map((d) => ({
+        cx: xScale(d.shooting_date),
+        cy: innerHeight / 2,
+        cr: 3,
+        strokeWidth: 0.4,
+        opacity: d.rank === "NA" ? 0 : 0.5,
+        r: colors.white,
+        g: colors.white,
+        b: colors.white,
+        id: d.id
+      }))
+    } else if (index === 4) {
+      newCircles = data.map((d) => ({
+        cx: xScale(d.shooting_date),
+        cy: yScale(d.total_words),
+        cr: 1,
+        strokeWidth: 0,
+        opacity: d.rank === "NA" ? 0 : 1,
+        r: colors.white,
+        g: colors.white,
+        b: colors.white,
+        id: d.id
+      }))
+    } else if (index === 5) {
+      newCircles = data.map((d) => ({
+        cx: xScale(d.shooting_date),
+        cy: yScale(d.total_words),
+        cr: 1,
+        strokeWidth: 0,
+        opacity: d.rank === "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1,
+        r: d.id === selected ? colors.orange.r : colors.white,
+        g: d.id === selected ? colors.orange.g : colors.white,
+        b: d.id === selected ? colors.orange.b : colors.white,
+        id: d.id
+      }))
+    } else if (index === 6) {
+      newCircles = data.map((d) => ({
+        cx: xScale(d.shooting_date),
+        cy: yScale(d.total_words),
+        cr: rScale(d.total_front_page),
+        strokeWidth: 0.4,
+        opacity: d.rank === "NA" ? 0 : 0.8,
+        r: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+        g: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+        b: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+        id: d.id
+      }))
+    } else if (index === 7) {
+      newCircles = data.map((d) => ({
+        cx: xScale(d.shooting_date),
+        cy: yScale(d.total_words),
+        cr: rScale(d.total_front_page),
+        strokeWidth: 0.4,
+        opacity: d.rank === "NA" ? 0 : d.id === 97 || d.id === selected ? 1 : 0.05,
+        r: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.r : colors.white,
+        g: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.g : colors.white,
+        b: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.b : colors.white,
+        id: d.id
+      }))
+    }
+    circles.set(newCircles)
   }
 
 </script>
@@ -85,28 +217,36 @@
 <Scroller top="{0.3}" bottom="{0.9}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
-    {#if index == 0}
       <g>
-        <text class="axis-label"
-              transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}
-        >Total mass shootings</text>
-        {#each data as d}
-            <circle
-              cx="{xScale(+d.year)}"
-              cy="{yScale(d.count_by_year)}"
-              r="{xScale.bandwidth() - height / 80}"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="#eeeeee"
-            />
-        {/each}
-        <text class="axis-label"
-              x={innerWidth / 2 + 40} y={innerHeight + 45}>Year</text>
+        <g class="axis-titles">
+          <text class="axis-label"
+                transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}>
+            {axisTitles.y}
+          </text>
+          <text class="axis-label"
+                x={innerWidth / 2 + 40}
+                y={innerHeight + 45}>
+            {axisTitles.x}
+          </text>
+        </g>
+        <g class="circles">
+          {#each $circles as {cx, cy, cr, strokeWidth, opacity, r, g, b, id}} 
+              <circle
+                style="{move(cx, cy)}"
+                r="{cr}"
+                stroke="#cccccc"
+                stroke-width="{strokeWidth}"
+                stroke-opacity="{opacity}"
+                fill="rgb({r}, {g}, {b})"
+                fill-opacity="{opacity}"
+                id="{id}"
+              />
+          {/each}
+        </g>
       </g>
+    <!-- {#if index == 0}
     {:else if index == 1}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}>Total mass shootings</text>
+
           {#each data as d}
             <circle
               cx="{xScale(+d.year)}"
@@ -331,7 +471,7 @@
         <text class="axis-label"
         x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
       </g>
-    {/if}
+    {/if} -->
   </svg>
 </div>
 
@@ -364,8 +504,11 @@
     </p>
   </section>
   <section data-section="3">
+    <p>For all other 117 incidnets...</p>
+  </section>
+  <section data-section="4">
     <p>
-      This chart shows the number of total words in NYT articles about 117 shootings since 1982. Increasingly widely-reported shootings have happened in recent years.
+      This chart shows the number of total words in NYT articles. Increasingly widely-reported shootings have happened in recent years.
     </p>
       <table>
       <thead>
@@ -440,7 +583,7 @@
       </tbody>
       </table>
   </section>
-  <section data-section="4">
+  <section data-section="5">
     {#if selectedD.id === 113}
       <p>
         The <span class="selected">{selectedD.case}</span> in Texas in 2019, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
@@ -455,12 +598,12 @@
       </p>
     {/if}
   </section>
-  <section data-section="5">
+  <section data-section="6">
     <p>
       Of all 117 shootings that had at least one article, 65 made it to the front page while 52 didn’t. 
     </p>
   </section>
-  <section data-section="6">
+  <section data-section="7">
       {#if selectedD.id === 97}
       <p>
         The shooting that generated the most articles on the front page was the one you chose, <span class="selected">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
