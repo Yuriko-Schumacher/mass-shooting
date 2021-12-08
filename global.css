@@ -26,12 +26,9 @@ h1, h2, h3, h4, h5 {
 	line-height: 1;
 }
 
-h1, h2 {
-	text-align: center;
-}
-
 h1 {
 	font-size: 3rem;
+  text-align: center;
 }
 
 h2 {
@@ -60,4 +57,20 @@ a:link, a:visited {
 a:hover {
 	color: rgb(255, 217, 0);
 	transition: all 0.4s ease;
+}
+
+.axis-label, .chart-title {
+  fill: #eeeeee;
+  font-family: 'Fira Sans Condensed', sans-serif;
+}
+
+.chart-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.axis-label {
+  opacity: 0.5;
+  font-size: 16px;
+  font-style: italic
 }
