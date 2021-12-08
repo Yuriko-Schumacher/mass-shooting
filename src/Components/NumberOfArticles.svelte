@@ -2,7 +2,6 @@
   import * as d3 from 'd3';
   import Scroller from "@sveltejs/svelte-scroller";
   import { spring } from 'svelte/motion';
-  import { cubicOut } from 'svelte/easing';
 
   export let data;
   export let selected;
@@ -244,234 +243,6 @@
           {/each}
         </g>
       </g>
-    <!-- {#if index == 0}
-    {:else if index == 1}
-
-          {#each data as d}
-            <circle
-              cx="{xScale(+d.year)}"
-              cy="{yScale(d.count_by_year)}"
-              r="{xScale.bandwidth() - height / 80}"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="{d.id === selected ? "orange" : "#eeeeee"}"
-              style="opacity: {d.id === selected ? 1 : 0.1}"
-            />
-          {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Year</text>
-      </g>
-    {:else if index == 2}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}>Total mass shootings</text>
-          {#each data as d}
-            <circle
-              cx="{xScale(+d.year)}"
-              cy="{yScale(d.count_by_year)}"
-              r="{xScale.bandwidth() - height / 80}"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="{d.total_front_page == "NA" 
-                      ? "#222222"
-                      : "#eeeeee"}"
-              style="opacity: {d.total_front_page == "NA" ? 0.1 : 
-                                d.total_articles == 0 ? 1 : 0.1}"
-            />
-          {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Year</text>
-      </g>
-    {:else if index == 3}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 90}) rotate(-90)`}>Total number of words</text>
-          {#each hlineNumbers as n}
-          <line 
-            x1="{xScale(parseTime("01/01/81"))}"
-            y1="{yScale(n)}"
-            x2="{xScale(parseTime("12/31/21"))}"
-            y2="{yScale(n)}"
-            stroke="gray"
-            stroke-opacity=0.5
-            stroke-width=0.5
-          />
-          <text
-            class="axis-ticks"
-            x="{xScale(parseTime("01/01/81"))}"
-            y="{yScale(n) + 5}"
-          >{format(n)}
-          </text>
-          {/each}
-        {#each data as d}
-        <rect
-          x="{xScale(d.shooting_date)}"
-          y="{yScale(d.total_words)}"
-          width="1"
-          height="{height - yScale(d.total_words) - margin.b}"
-          fill="#eeeeee"
-          fill-opacity="0.8"
-        />
-        <circle
-          cx="{xScale(d.shooting_date)}"
-          cy="{yScale(d.total_words)}"
-          r="1"
-          stroke="#eeeeee"
-          stroke-width="0.4"
-          fill="#eeeeee"
-        />
-        {#if d.total_words > 80000 || d.city == "Garden City" || d.city == "Blacksburg"}
-        <text
-          class="text-label"
-          x="{xScale(d.shooting_date) + 7}"
-          y="{d.city == "San Bernardino"
-          ? yScale(d.total_words) + 25
-          : yScale(d.total_words) + 5}"
-        >{d.city}</text>
-        {/if}
-        {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
-      </g>
-    {:else if index == 4}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 90}) rotate(-90)`}>Total number of words</text>
-        {#each hlineNumbers as n}
-        <line 
-          x1="{xScale(parseTime("01/01/81"))}"
-          y1="{yScale(n)}"
-          x2="{xScale(parseTime("12/31/21"))}"
-          y2="{yScale(n)}"
-          stroke="gray"
-          stroke-opacity=0.5
-          stroke-width=0.5
-        />
-        <text
-          class="axis-ticks"
-          x="{xScale(parseTime("01/01/81"))}"
-          y="{yScale(n) + 5}"
-        >{format(n)}
-        </text>
-        {/each}
-          {#each data as d}
-            <rect
-              x="{xScale(d.shooting_date)}"
-              y="{yScale(d.total_words)}"
-              width="1"
-              height="{height - yScale(d.total_words) - margin.b}"
-              fill="{d.id === selected ? "orange" : "#eeeeee"}"
-              fill-opacity="{d.id === 113 || d.id === selected ? 1 : 0.1}"
-            />
-            <circle
-              cx="{xScale(d.shooting_date)}"
-              cy="{yScale(d.total_words)}"
-              r="1"
-              stroke="#eeeeee"
-              stroke-width="0.4"
-              fill="{d.id === selected ? "orange" : "#eeeeee"}"
-              style="opacity: {d.id === 113 || d.id === selected ? 1 : 0.1}"
-            />
-            {#if d.id === selected || d.id === 113}
-            <text
-              class="text-label"
-              x="{xScale(d.shooting_date) + 7}"
-              y="{yScale(d.total_words) + 5}"
-              fill="{d.id === selected ? "orange" : "#eeeeee"}"
-            >{d.city}</text>
-            {/if}
-          {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
-      </g>
-    {:else if index == 5}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 90}) rotate(-90)`}>Total number of words</text>
-        {#each hlineNumbers as n}
-        <line 
-          x1="{xScale(parseTime("01/01/81"))}"
-          y1="{yScale(n)}"
-          x2="{xScale(parseTime("12/31/21"))}"
-          y2="{yScale(n)}"
-          stroke="gray"
-          stroke-opacity=0.5
-          stroke-width=0.5
-        />
-        <text
-          class="axis-ticks"
-          x="{xScale(parseTime("01/01/81"))}"
-          y="{yScale(n) + 5}"
-        >{format(n)}
-        </text>
-        {/each}
-        {#each data as d}
-          <rect
-            x="{xScale(d.shooting_date)}"
-            y="{yScale(d.total_words)}"
-            width="1"
-            height="{height - yScale(d.total_words) - margin.b}"
-            fill="#eeeeee"
-            fill-opacity={d.if_made_on_front === "FALSE" ? 0.1 : 1}
-          />
-          <circle
-            cx="{xScale(d.shooting_date)}"
-            cy="{yScale(d.total_words)}"
-            r="{rScale(d.total_front_page)}"
-            stroke="#eeeeee"
-            stroke-width="0.4"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : "#eeeeee"}"
-            fill-opacity="{d.made_front_count == "FALSE" ? 0 : 0.8}"
-            stroke-opacity="{d.made_front_count == "NA" ? 0 : 1}"
-          />
-        {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
-      </g>
-    {:else if index == 6}
-      <g>
-        <text class="axis-label"
-        transform={`translate(30, ${innerHeight / 2 + 90}) rotate(-90)`}>Total number of words</text>
-        {#each hlineNumbers as n}
-        <line 
-          x1="{xScale(parseTime("01/01/81"))}"
-          y1="{yScale(n)}"
-          x2="{xScale(parseTime("12/31/21"))}"
-          y2="{yScale(n)}"
-          stroke="gray"
-          stroke-opacity=0.5
-          stroke-width=0.5
-        />
-        <text
-          class="axis-ticks"
-          x="{xScale(parseTime("01/01/81"))}"
-          y="{yScale(n) + 5}"
-        >{format(n)}
-        </text>
-        {/each}
-        {#each data as d}
-          <rect
-            x="{xScale(d.shooting_date)}"
-            y="{yScale(d.total_words)}"
-            width="1"
-            height="{height - yScale(d.total_words) - margin.b}"
-            fill="{d.id === selected ? "orange" : "#eeeeee"}"
-            style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.1}"
-          />
-          <circle
-            cx="{xScale(d.shooting_date)}"
-            cy="{yScale(d.total_words)}"
-            r="{rScale(d.total_front_page)}"
-            stroke="{d.id === selected ? "orange" : "#eeeeee"}"
-            stroke-width="0.4"
-            fill="{d.if_made_on_front == "FALSE" ? "#222222" : d.id === selected ? "orange" : "#eeeeee"}"
-            style="opacity: {d.id === 97 || d.id === selected ? 1 : 0.05}"
-          />
-        {/each}
-        <text class="axis-label"
-        x={innerWidth / 2 + 40} y={innerHeight + 45}>Date</text>
-      </g>
-    {/if} -->
   </svg>
 </div>
 
@@ -497,20 +268,23 @@
   </section>
   <section data-section="2">
     <p>
-      This project found no articles in The New York Times print edition about these seven shootings.
+      For all 124 shootings, I tracked the coverage by The New York Times’ print edition, from the date the shooting happened and two weeks after that date. This project found no articles about these seven shootings.
     </p>
     <p>
       These include <span class="highlighted">Atlantis Plastics shooting</span> in Henderson, Kentucky in 2008 where six people were killed by an employee at the factory. Another is the <span class="highlighted">Trestle Trail bridge shooting</span> in Menasha, Wisconsin in 2015, and the <span class="highlighted">hotel bar shooting</span> in State College, Pennsylvania in 2019.
     </p>
   </section>
   <section data-section="3">
-    <p>For all other 117 incidnets...</p>
+    <p>For all other 117 incidnets that had at least one article...</p>
   </section>
   <section data-section="4">
     <p>
-      This chart shows the number of total words in NYT articles. Increasingly widely-reported shootings have happened in recent years.
+      This chart shows the number of total words. Increasingly widely-reported shootings have happened in recent years.
     </p>
-      <table>
+    <h4>
+      Top 10 shootings with the most amount of coverage
+    </h4>
+    <table>
       <thead>
         <tr>
           <th class="tg-0lax">Rank</th>
@@ -581,7 +355,7 @@
           <td class="tg-0lax">76,337</td>
         </tr>
       </tbody>
-      </table>
+    </table>
   </section>
   <section data-section="5">
     {#if selectedD.id === 113}
@@ -601,6 +375,9 @@
   <section data-section="6">
     <p>
       Of all 117 shootings that had at least one article, 65 made it to the front page while 52 didn’t. 
+    </p>
+    <p>
+      The sizes of the circles indicate the number of front page articles.
     </p>
   </section>
   <section data-section="7">

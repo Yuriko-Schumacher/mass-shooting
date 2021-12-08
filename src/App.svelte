@@ -8,12 +8,16 @@
   import Footer from './Components/Footer.svelte'
   import SpecialThanks from './Components/SpecialThanks.svelte';
 
+  export let datasets = [];
   export let nytMergedD = [];
+  export let victimsD = [];
   
   let promise = getData();
 
   async function getData() {
     nytMergedD = await d3.csv("data/nyt_merged.csv")
+    victimsD = await d3.csv("data/victims.csv")
+    datasets = [nytMergedD, victimsD]
   }
 </script>
 
@@ -22,7 +26,7 @@
 <main>
   <Title />
   {#await promise then data} 
-    <Main data={nytMergedD} />
+    <Main dataset={datasets} />
   {/await}
 </main>
 
