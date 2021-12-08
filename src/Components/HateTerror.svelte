@@ -11,10 +11,9 @@
 
   $: selectedD = data.filter(d => d.id === selected)[0]
 
-  const margin = { t: 25, r: 50, b: 50, l: 50 }
+  const margin = { t: 100, r: 50, b: 50, l: 50 }
   const width = window.innerWidth * 0.9 * 0.6;
-  const maxHeight = window.innerHeight - 100;
-  let height = width / 2.5 > maxHeight ? maxHeight : width / 2.5;
+  const height = 500;
 
   let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
@@ -49,17 +48,37 @@
 </article>
 <div class="chart">
   <svg width={width} height={height}>
+    <g class="chart-title">
+      <text transform="translate(0, 30)">
+        Coverage of shootings that involved Hate crimes
+      </text>
+    </g>
+    <g class="axis-titles">
+      <text class="axis-label"
+            transform={`translate(30, 450) rotate(-90)`}>
+            ← Less coverage
+      </text>
+      <text class="axis-label"
+            transform={`translate(30, 200) rotate(-90)`}>
+            More coverage →
+      </text>
+      <text class="axis-label"
+            x={innerWidth / 2 + 40}
+            y={innerHeight + 120}>
+            Date of the shooting
+      </text>
+    </g>
     <g class="circles">
       {#each data as d} 
-          <circle
-            cx = "{xScale(d.shooting_date)}"
-            cy = "{yScale(d.rank)}"
-            r="3"
-            fill="{d.hate == "TRUE" ? "orange" : "#cccccc"}"
-            fill-opacity="{d.hate == "TRUE" ? 1 : 0.2}"
-            rank="{d.rank}"
-            id="{d.id}"
-          />
+        <circle
+          cx = "{xScale(d.shooting_date)}"
+          cy = "{yScale(d.rank)}"
+          r="3"
+          fill="#cccccc"
+          fill-opacity="{d.terrorism == "TRUE" ? 1 : 0.1}"
+          rank="{d.rank}"
+          id="{d.id}"
+        />
       {/each}
     </g>
   </svg>
@@ -77,14 +96,34 @@
 </article>
 <div class="chart">
   <svg width={width} height={height}>
+    <g class="chart-title">
+      <text transform="translate(0, 30)">
+        Coverage of shootings that involved Terrorism
+      </text>
+    </g>
+    <g class="axis-titles">
+      <text class="axis-label"
+            transform={`translate(30, 450) rotate(-90)`}>
+            ← Less coverage
+      </text>
+      <text class="axis-label"
+            transform={`translate(30, 200) rotate(-90)`}>
+            More coverage →
+      </text>
+      <text class="axis-label"
+            x={innerWidth / 2}
+            y={innerHeight + 120}>
+            Date of the shooting
+      </text>
+    </g>
     <g class="circles">
       {#each data as d} 
           <circle
             cx = "{xScale(d.shooting_date)}"
             cy = "{yScale(d.rank)}"
             r="3"
-            fill="{d.terrorism == "TRUE" ? "orange" : "#cccccc"}"
-            fill-opacity="{d.terrorism == "TRUE" ? 1 : 0.2}"
+            fill="#cccccc"
+            fill-opacity="{d.terrorism == "TRUE" ? 1 : 0.1}"
             rank="{d.rank}"
             id="{d.id}"
           />
@@ -109,4 +148,5 @@
     width: 54vw;
     margin: 5rem auto;
   }
+
 </style>

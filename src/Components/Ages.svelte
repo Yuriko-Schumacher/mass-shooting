@@ -10,7 +10,7 @@
 
   let index, offset, progress, count, selectedD;
   let selectedD2, averageAge;
-  let xScale, yScale, simulation;
+  let xScale, yScale, simulation, chartTitle;
 
   $: selectedD = data1.filter(d => d.id === selected)[0]
   $: {
@@ -29,10 +29,10 @@
 
   const format = d3.format(",");
 
-  const margin = { t: 15, r: 150, b: 100, l: 70 }
+  const margin = { t: 75, r: 150, b: 100, l: 70 }
   const width = window.innerWidth * 0.9 * 0.6;
   const maxHeight = window.innerHeight - 200;
-  let height = width / 1.3 > maxHeight ? maxHeight : width / 1.3;
+  let height = width > maxHeight ? maxHeight : width;
 
   let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
@@ -40,13 +40,10 @@
   // let vlineNumbers = [...Array(60).keys()];
   // let vlineNumbers2 = [...Array(12).keys()].map(el => el * 5 + 5)
 
-  // let xScale = d3.scaleLinear()
-	// 	.domain([0, d3.max(filteredD, (d) => d.fatalities) + 1])
-	// 	.range([margin.l, width - margin.r]);
-
-  // let yScale = d3.scaleLinear()
-	// 	.domain(d3.extent(filteredD, (d) => d.total_words))
-	// 	.range([height - margin.b, margin.t]);
+  let axisTitles = {
+    x: "Suspect's age",
+    y: "Total number of words"
+  }
 
   const move = (cx, cy) => `transform: translate(${cx}px, ${cy}px)`;
   const colors = {
@@ -99,6 +96,11 @@
       );
 
     if (index === 0) {
+      chartTitle = "Age of suspects and the total number of words"
+      axisTitles = {
+        x: "Suspect's age",
+        y: "Total number of words"
+      }
       newCircles = data2.map(d => ({
         cx: d.suspect_2_age === "NA"
               ? xScale(d.suspect_1_age)
@@ -113,6 +115,11 @@
         id: d.id
       }))
     } else if (index === 1) {
+      chartTitle = "Ages of victims and the total number of words"
+      axisTitles = {
+        x: "Victim's age",
+        y: "Total number of words"
+      }
       simulation.on("tick", () => {
         newCircles = data2.map(d => ({
           cx: d.x,
@@ -172,17 +179,20 @@
 <div slot="background" class="background">
   <svg {width} {height}>
     <g>
+      <g class="chart-title">
+        <text transform="translate(0, 30)">
+          {chartTitle}
+        </text>
+      </g>
       <g class="axis-titles">
         <text class="axis-label"
               transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}>
-          <!-- {axisTitles.y} -->
-          AxisTitle
+          {axisTitles.y}
         </text>
         <text class="axis-label"
               x={innerWidth / 2 + 40}
               y={innerHeight + 45}>
-          <!-- {axisTitles.x} -->
-          AxisTitle
+          {axisTitles.x}
         </text>
       </g>
       <g class="circles">

@@ -2,21 +2,22 @@
   import * as d3 from 'd3';
   import Scroller from "@sveltejs/svelte-scroller";
   import { spring } from 'svelte/motion';
+import { color } from 'd3';
 
   export let data;
   export let selected;
 
-  let index, offset, progress, count, selectedD;
+  let index, offset, progress, count, selectedD, chartTitle;
 
   $: selectedD = data.filter(d => d.id === selected)[0]
 
   const parseTime = d3.timeParse("%m/%d/%y")
   const format = d3.format(',')
 
-  const margin = { t: 25, r: 50, b: 50, l: 50 }
+  const margin = { t: 75, r: 50, b: 50, l: 50 }
   const width = window.innerWidth * 0.9 * 0.6;
-  const maxHeight = window.innerHeight - 300;
-  let height = width / 2.5 > maxHeight ? maxHeight : width / 2.5;
+  const maxHeight = window.innerHeight;
+  let height = width > maxHeight ? maxHeight : width;
 
   let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
@@ -62,10 +63,30 @@
       damping: 0.9
     }
   );
-
   let newCircles; 
 
+  let rects = spring(
+    data.map(d => (
+      {
+        x: 0,
+        y: 0,
+        height: 0,
+        opacity: 0,
+        r: colors.white,
+        g: colors.white,
+        b: colors.white,
+        id: d.id
+      }
+    )),
+    {
+      stiffness: 0.1,
+      damping: 0.9
+    }
+  )
+  let newRects;
+
   $: if (index < 3) {
+    chartTitle = "Number of mass shootings over the years"
     height = width / 2.5 > maxHeight ? maxHeight : width / 2.5;
     innerHeight = height - margin.t - margin.b;
 
@@ -146,6 +167,7 @@
       x: "Date",
       y: "Total number of words"
     }
+    chartTitle = (index == 3) ? "" : "Total number of words in NYT print edition"
 
     if (index === 3) {
       newCircles = data.map((d) => ({
@@ -159,11 +181,23 @@
         b: colors.white,
         id: d.id
       }))
+      newRects = data.map(d => (
+        {
+          x: xScale(d.shooting_date),
+          y: yScale(d.total_words),
+          height: height - yScale(d.total_words) - margin.b,
+          opacity: 0,
+          r: colors.white,
+          g: colors.white,
+          b: colors.white,
+          id: d.id
+        }
+      ))
     } else if (index === 4) {
       newCircles = data.map((d) => ({
         cx: xScale(d.shooting_date),
         cy: yScale(d.total_words),
-        cr: 1,
+        cr: 1.5,
         strokeWidth: 0,
         opacity: d.rank === "NA" ? 0 : 1,
         r: colors.white,
@@ -171,11 +205,23 @@
         b: colors.white,
         id: d.id
       }))
+      newRects = data.map(d => (
+        {
+          x: xScale(d.shooting_date),
+          y: yScale(d.total_words),
+          height: height - yScale(d.total_words) - margin.b,
+          opacity: 1,
+          r: colors.white,
+          g: colors.white,
+          b: colors.white,
+          id: d.id
+        }
+      ))
     } else if (index === 5) {
       newCircles = data.map((d) => ({
         cx: xScale(d.shooting_date),
         cy: yScale(d.total_words),
-        cr: 1,
+        cr: 1.5,
         strokeWidth: 0,
         opacity: d.rank === "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1,
         r: d.id === selected ? colors.orange.r : colors.white,
@@ -183,6 +229,18 @@
         b: d.id === selected ? colors.orange.b : colors.white,
         id: d.id
       }))
+      newRects = data.map(d => (
+        {
+          x: xScale(d.shooting_date),
+          y: yScale(d.total_words),
+          height: height - yScale(d.total_words) - margin.b,
+          opacity: d.rank === "NA" ? 0 : d.id === 113 || d.id === selected ? 1 : 0.1,
+          r: d.id === selected ? colors.orange.r : colors.white,
+          g: d.id === selected ? colors.orange.g : colors.white,
+          b: d.id === selected ? colors.orange.b : colors.white,
+          id: d.id
+        }
+      ))
     } else if (index === 6) {
       newCircles = data.map((d) => ({
         cx: xScale(d.shooting_date),
@@ -195,6 +253,18 @@
         b: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
         id: d.id
       }))
+      newRects = data.map(d => (
+        {
+          x: xScale(d.shooting_date),
+          y: yScale(d.total_words),
+          height: height - yScale(d.total_words) - margin.b,
+          opacity: 1,
+          r: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+          g: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+          b: d.if_made_on_front == "FALSE" ? colors.black : colors.white,
+          id: d.id
+        }
+      ))
     } else if (index === 7) {
       newCircles = data.map((d) => ({
         cx: xScale(d.shooting_date),
@@ -207,24 +277,42 @@
         b: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.b : colors.white,
         id: d.id
       }))
+      newRects = data.map(d => (
+        {
+          x: xScale(d.shooting_date),
+          y: yScale(d.total_words),
+          height: height - yScale(d.total_words) - margin.b,
+          opacity: d.rank === "NA" ? 0 : d.id === 97 || d.id === selected ? 1 : 0.1,
+          r: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.r : colors.white,
+          g: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.g : colors.white,
+          b: d.if_made_on_front == "FALSE" ? colors.black : d.id === selected ? colors.orange.b : colors.white,
+            id: d.id
+        }
+      ))
     }
     circles.set(newCircles)
+    rects.set(newRects)
   }
 
 </script>
 
-<Scroller top="{0.3}" bottom="{0.9}" bind:index bind:offset bind:progress bind:count>
+<Scroller top="{0.2}" bottom="{0.9}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
       <g>
+        <g class="chart-title">
+          <text transform="translate(0, 30)">
+            {chartTitle}
+          </text>
+        </g>
         <g class="axis-titles">
           <text class="axis-label"
-                transform={`translate(30, ${innerHeight / 2 + 70}) rotate(-90)`}>
+                transform={`translate(30, ${innerHeight / 2 + 150}) rotate(-90)`}>
             {axisTitles.y}
           </text>
           <text class="axis-label"
                 x={innerWidth / 2 + 40}
-                y={innerHeight + 45}>
+                y={innerHeight + 100}>
             {axisTitles.x}
           </text>
         </g>
@@ -240,6 +328,20 @@
                 fill-opacity="{opacity}"
                 id="{id}"
               />
+          {/each}
+        </g>
+        <g class="rects">
+          {#each $rects as {x, y, height, opacity, r, g, b, id}}
+            <rect
+              x="{x}"
+              y="{y}"
+              width="0.5"
+              height="{height}"
+              strokeWidth="0.5"
+              fill="rgb({r}, {g}, {b})"
+              style="opacity: {opacity}"
+              id="{id}"
+            ></rect>
           {/each}
         </g>
       </g>

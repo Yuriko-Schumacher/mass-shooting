@@ -12,10 +12,11 @@
 
   const format = d3.format(",");
 
-  const margin = { t: 15, r: 150, b: 100, l: 70 }
+  const margin = { t: 75, r: 150, b: 100, l: 70 }
   const width = window.innerWidth * 0.9 * 0.6;
   const maxHeight = window.innerHeight - 200;
-  let height = width / 1.3 > maxHeight ? maxHeight : width / 1.3;
+  const chartTitle = "Number of fatal victims and total number of words, by location"
+  let height = width > maxHeight ? maxHeight : width;
   let hlineNumbers = [...Array(13).keys()].map((el) => el * 10000);
   let vlineNumbers = [...Array(60).keys()];
   let vlineNumbers2 = [...Array(12).keys()].map(el => el * 5 + 5)
@@ -33,6 +34,11 @@
 <Scroller top="{0.2}" bottom="{1}" bind:index bind:offset bind:progress bind:count>
 <div slot="background" class="background">
   <svg {width} {height}>
+    <g class="chart-title">
+      <text transform="translate(0, 30)">
+        {chartTitle}
+      </text>
+    </g>
     {#each hlineNumbers as n}
     <line 
       x1="{xScale(0)}"
