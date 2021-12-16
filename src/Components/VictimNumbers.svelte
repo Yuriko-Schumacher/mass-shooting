@@ -40,21 +40,21 @@
       </text>
     </g>
     {#each hlineNumbers as n}
-    <line 
-      x1="{xScale(0)}"
-      y1="{yScale(n)}"
-      x2="{xScale(60)}"
-      y2="{yScale(n)}"
-      stroke="gray"
-      stroke-opacity=0.5
-      stroke-width=0.5
-    />
-    <text
-      class="axis-ticks"
-      x="{xScale(0)}"
-      y="{yScale(n) + 5}"
-    >{format(n)}
-    </text>
+      <line 
+        x1="{xScale(0)}"
+        y1="{yScale(n)}"
+        x2="{xScale(60)}"
+        y2="{yScale(n)}"
+        stroke="gray"
+        stroke-opacity=0.5
+        stroke-width=0.5
+      />
+      <text
+        class="axis-ticks"
+        x="{xScale(0)}"
+        y="{yScale(n) + 5}"
+      >{format(n)}
+      </text>
     {/each}
     {#each vlineNumbers as n}
     <line 

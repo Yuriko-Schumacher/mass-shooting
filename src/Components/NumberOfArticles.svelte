@@ -12,7 +12,6 @@ import { lineRadial } from 'd3';
   $: {
     selectedD = data.filter(d => d.id === selected)[0]
     top10D = data.filter(d => d.rank <= 10 || d.id === selected)
-    console.log(top10D)
   } 
 
   const parseTime = d3.timeParse("%m/%d/%y")
@@ -44,6 +43,9 @@ import { lineRadial } from 'd3';
       .range([3, 10])
 
   const hlineNumbers = [...Array(13).keys()].map((el) => el * 10000);
+  const radiusLegends = [0, 1, 10, 20, 28];
+  console.log(radiusLegends)
+
   let xAxisLabel, yAxisLabel;
   let axisTitles = {
     x: "",
@@ -168,7 +170,6 @@ import { lineRadial } from 'd3';
 
     years = [...Array(40).keys()].map(d => d + 1982).map(d => d.toString()).map(d => d.slice(-2)).filter(d => d % 5 === 0)
     years = years.map(d => "01/01/".concat("", d))
-    console.log(years)
 
     xScale = d3.scaleTime()
       .domain([parseTime("01/01/81"), parseTime("12/31/21")])
@@ -187,7 +188,7 @@ import { lineRadial } from 'd3';
       x: "Date",
       y: "Total number of words"
     }
-    chartTitle = (index == 3) ? "" : "Total number of words in NYT print edition"
+    chartTitle = (index == 3) ? "" : index < 6 ? "Total number of words in NYT print edition" : "Total number of front page articles in NYT print edition"
 
     if (index === 3) {
       newCircles = data.map((d) => ({
@@ -369,8 +370,8 @@ import { lineRadial } from 'd3';
           <g class="axis-ticks">
             {#each counts as count}
               <text
-                x="{margin.l}"
-                y="{yScale(count)}"
+                x="{margin.l - 5}"
+                y="{yScale(count) + 5}"
                 fill="white"
                 text-anchor="end"
                 fill-opacity="{count % 5 === 0 ? 1 : 0}"
@@ -386,6 +387,50 @@ import { lineRadial } from 'd3';
               ></line>
             {/each}
           </g>
+        {:else if index > 3}
+          <g class="y-axis-grids">
+            {#each hlineNumbers as n}
+              <line 
+                x1="{margin.l}"
+                y1="{yScale(n)}"
+                x2="{width - margin.r}"
+                y2="{yScale(n)}"
+                stroke="gray"
+                stroke-opacity=0.5
+                stroke-width=0.5
+              />
+              <text
+                class="axis-ticks"
+                x="{margin.l - 5}"
+                y="{yScale(n) + 5}"
+                fill="white"
+                text-anchor="end"
+              >{format(n)}
+              </text>
+            {/each}
+          </g>
+          {#if index >= 6}
+            <g class="radius-legend">
+              {#each radiusLegends as n, i}
+                <circle
+                  cx="{i * 50 + 25}"
+                  cy="{margin.t - 20}"
+                  r={rScale(n)}
+                  fill="{n === 0 ? "#222222" : "#eeeeee"}"
+                  fill-opacity="0.8"
+                  stroke="#eeeeee"
+                  stroke-width="0.4"
+                ></circle>
+                <text
+                  class="axis-ticks"
+                  x={i * 50 + 25}
+                  y={margin.t}
+                  fill="white"
+                  text-anchor="middle"
+                >{n}</text>
+              {/each}
+            </g>
+          {/if}
         {/if}
         <g class="circles">
           {#each $circles as {cx, cy, cr, strokeWidth, opacity, r, g, b, id}} 
