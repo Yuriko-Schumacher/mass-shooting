@@ -42,7 +42,7 @@
 				>
 			</ul>
 		</div>
-    <a href="https://mediainnovation.camd.northeastern.edu/2021/masters/">
+    <a href="https://mediainnovation.camd.northeastern.edu/2021/masters/" target="_blank">
       <div class="logo"></div>
     </a>
 	</nav>

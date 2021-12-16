@@ -5,11 +5,13 @@
 			style="text-decoration: underline">Northeastern University School of Journalism.</a
 		> &#169; 2021
 	</p>
-	<img
-			src="https://mediainnovation.camd.northeastern.edu/2021/loveinthetimeofcovid/images/seal_logotype-768x252.png"
-			width="300px"
-			alt="Logo of Northeastern University College of Arts, Media and Design"
-	/>
+  <a href="https://mediainnovation.camd.northeastern.edu/2021/masters/" target="_blank">
+    <img
+        src="https://mediainnovation.camd.northeastern.edu/2021/loveinthetimeofcovid/images/seal_logotype-768x252.png"
+        width="300px"
+        alt="Logo of Northeastern University College of Arts, Media and Design"
+    />
+  </a>
 </footer>
 
 <style>

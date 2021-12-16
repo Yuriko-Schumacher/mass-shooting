@@ -1,6 +1,6 @@
 <div>
   <p>
-    Special thanks to Prof. Dan Zedek, Emily Boardman Ndulue, and Prof. Rahul Bhargava for their valuable feedback and generosity of offering help!<br><a href="mailto: schumacher.y@northeastern.edu">Email Yuriko</a>
+    Special thanks to Prof. Dan Zedek, Emily Boardman Ndulue, and Prof. Rahul Bhargava for their valuable feedback and generosity of offering help!<br><a href="mailto: schumacher.y@northeastern.edu">Email Yuriko</a> | <a href="#main">Go back to top</a>
   </p>
 </div>
 
