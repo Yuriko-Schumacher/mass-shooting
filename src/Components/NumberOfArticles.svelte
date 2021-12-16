@@ -549,11 +549,11 @@ import { lineRadial } from 'd3';
   <section data-section="7">
       {#if selectedD.id === 97}
       <p>
-        The shooting that generated the most articles on the front page was the one you chose, <span class="selected">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+        The shooting that generated the most articles on the front page was the one you chose, <span class="selected">Parkland High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
       </p>
       {:else}
         <p>
-          The shooting that generated the most articles on the front page was <span class="highlighted">Marjory Stoneman Douglas High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
+          The shooting that generated the most articles on the front page was <span class="highlighted">Parkland High School shooting</span> in Parkland, Florida in 2018, with a total of 28 articles for the two-week period. 
         </p>
         <p>
           The shooting you chose, <span class="selected">{selectedD.case}</span>, {selectedD.total_front_page == 0 ? "didn't make it to the front page" : `had ${selectedD.total_front_page} article${selectedD.total_front_page == 1 ? "" : "s"} on the front page`}.
