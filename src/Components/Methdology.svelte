@@ -7,13 +7,13 @@
       Why am I looking at The New York Times coverage?
     </h4>
     <p>
-      I focused on The New York Times because it’s a historically widely-circulated national newspaper which widely reports issues throughout the country. Generally, local newspapers focus more on local issues. As I pointed out above, The Times focuses more on New York and around it, but Prof. Dan Zedek, and my second reader, Emily Boardman Ndulue, researcher at Media Cloud Project, and I decided the local biases are small enough. Availability of historical data and other tools such as New York Times API and Timesmachine were also major reasons to focus on The Times for this research.
+      I focused on The New York Times because it’s a historically widely-circulated national newspaper which widely reports issues throughout the country. Generally, local newspapers focus more on local issues. The Times focuses more on New York and around it, but Prof. Dan Zedek, and my second reader, Emily Boardman Ndulue, researcher at Media Cloud Project, and I decided the local biases are small enough. Availability of historical data and other tools such as New York Times API and Timesmachine were also major reasons to focus on The Times for this research.
     </p>
     <h4>
       Why am I tracking Times’ print coverage and excluding digital?
     </h4>
     <p>
-      Since I’m analyzing data from the 1980s, where digital coverage was not the main focus of the paper, I’m only looking at print coverage until present. Since all copies of print issues are available on Timesmachine and ProQuest, while there are no packaged batches of online articles, focusing only on print improved the accuracy of data collection and cleaning. Moreover, The Times’ decision on the rank of articles in print are historically widely considered by other U.S. news outlets, so we decided the paper’s decision-making on print should reflect the general trend in the news industry throughout the U.S.
+      Since I’m analyzing data from the 1980s, where digital coverage was not the main focus of the paper, I’m only looking at print coverage until present. All copies of print issues are available on Timesmachine and ProQuest, whereas there are no packaged batches of online articles. Focusing only on print improved the accuracy of data collection and cleaning. Moreover, The Times’ decision on the rank of articles in print are historically widely considered by other U.S. news outlets, so we decided the paper’s decision-making on print should reflect the general trend in the news industry throughout the U.S.
     </p>
     <h4>
       How did I collect the data?

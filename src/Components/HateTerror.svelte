@@ -137,7 +137,7 @@
 </div>
 <article>
   <p>
-    The top two most-reported incidents, ones in El Paso and Orlando, were reported as hate crimes, the former against Latino immigrants, the latter against gay people. All other hate-related shootings generated more coverage than the others, 11 of them were within the top 30 most-reported mass shootings by The Times.
+    The top two most-reported incidents, ones in El Paso and Orlando, were reported as hate crimes, the former against Latino immigrants, the latter against gay people. Among all other hate-related shootings generated more coverage than the others, 11 of them were within the top 30 most-reported mass shootings by The Times.
   </p>
   <p>
     The shooting you selected, the <span>{selectedD.case}</span>,
