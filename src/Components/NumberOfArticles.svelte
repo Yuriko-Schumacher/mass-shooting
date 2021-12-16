@@ -2,14 +2,17 @@
   import * as d3 from 'd3';
   import Scroller from "@sveltejs/svelte-scroller";
   import { spring } from 'svelte/motion';
-import { color } from 'd3';
 
   export let data;
   export let selected;
 
-  let index, offset, progress, count, selectedD, chartTitle;
+  let index, offset, progress, count, selectedD, top10D, chartTitle;
 
-  $: selectedD = data.filter(d => d.id === selected)[0]
+  $: {
+    selectedD = data.filter(d => d.id === selected)[0]
+    top10D = data.filter(d => d.rank <= 10 || d.id === selected)
+    console.log(top10D)
+  } 
 
   const parseTime = d3.timeParse("%m/%d/%y")
   const format = d3.format(',')
@@ -383,83 +386,31 @@ import { color } from 'd3';
     <p>
       This chart shows the number of total words. Increasingly widely-reported shootings have happened in recent years.
     </p>
+  </section>
+  <section data-section="5">
     <h4>
       Top 10 shootings with the most amount of coverage
     </h4>
     <table>
       <thead>
         <tr>
-          <th class="tg-0lax">Rank</th>
-          <th class="tg-0lax">Case</th>
-          <th class="tg-0lax">Year</th>
-          <th class="tg-0lax">Total words</th>
+          <th class="table__rank">Rank</th>
+          <th class="table__case">Case</th>
+          <th class="table__year">Year</th>
+          <th class="table__total-words">Total words</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="tg-0lax">1</td>
-          <td class="tg-0lax">El Paso Walmart mass shooting<br></td>
-          <td class="tg-0lax">2019</td>
-          <td class="tg-0lax">127,966</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">2</td>
-          <td class="tg-0lax">Orlando nightclub massacre</td>
-          <td class="tg-0lax">2016</td>
-          <td class="tg-0lax">124,798</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">3</td>
-          <td class="tg-0lax">Marjory Stoneman Douglas High School shooting</td>
-          <td class="tg-0lax">2018</td>
-          <td class="tg-0lax">112,309</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">4</td>
-          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Tucson shooting</span></td>
-          <td class="tg-0lax">2011</td>
-          <td class="tg-0lax">111,269</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">5</td>
-          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Sandy Hook Elementary massacre</span></td>
-          <td class="tg-0lax">2012</td>
-          <td class="tg-0lax">106,800</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">6</td>
-          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Columbine High School massacre</span></td>
-          <td class="tg-0lax">1999</td>
-          <td class="tg-0lax">95,617</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">7</td>
-          <td class="tg-0lax">Charleston Church Shooting</td>
-          <td class="tg-0lax">2015</td>
-          <td class="tg-0lax">81,793</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">8</td>
-          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">San Bernardino mass shooting</span></td>
-          <td class="tg-0lax">2015</td>
-          <td class="tg-0lax">76,891</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">9</td>
-          <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Dallas police shooting</span></td>
-          <td class="tg-0lax">2016</td>
-          <td class="tg-0lax">76,643</td>
-        </tr>
-        <tr>
-          <td class="tg-0lax">10</td>
-          <td class="tg-0lax">Dayton entertainment district shooting<br></td>
-          <td class="tg-0lax">2019</td>
-          <td class="tg-0lax">76,337</td>
-        </tr>
+        {#each top10D as d}
+          <tr class="{d.id === selected ? "tr__selected" : "tr__non-selected"}">
+            <td class="table__rank">{d.rank}</td>
+            <td class="table__case">{d.case}</td>
+            <td class="table__year">{d.year}</td>
+            <td class="table__total-words">{format(d.total_words)}</td>
+          </tr>
+        {/each}
       </tbody>
     </table>
-  </section>
-  <section data-section="5">
     {#if selectedD.id === 113}
       <p>
         The <span class="selected">{selectedD.case}</span> in Texas in 2019, where a gunman killed 22, injured 26 in a crowded Walmart store, attracted the most number of words (about 128,000 words) for the past four decades. Many of this attack’s reports were linked to the shooter’s motives, white nationalism and hate against immigrants.
@@ -528,12 +479,33 @@ import { color } from 'd3';
   }
 
   table, tr {
-    border: 1px solid #eeeeee;
+    border: 0.2px solid #eeeeee;
+    font-family: 'Fira Sans Condensed', sans-serif;
+    border-collapse: collapse;
+    font-size: 0.9em;
   }
 
-  .tg-0lax {
-    font-family: 'Fira Sans Condensed', sans-serif;
-    font-size: 0.8em;
+  table {
+    margin-bottom: 2em;
+  }
+
+  thead {
+    background: rgba(238, 238, 238, 0.6);
+    color: #222222;
+    border-color: #eeeeee;
+  }
+
+  .tr__selected {
+    background: rgba(255, 165, 0, 0.6);
+  }
+
+  td, th {
+    text-align: center;
+    padding: 0.3em 0.5em;
+  }
+
+  .table__case {
+    text-align: left;
   }
 
   .axis-ticks, .text-label {
@@ -550,7 +522,7 @@ import { color } from 'd3';
 
   .selected {
     color: white;
-    background: rgba(255, 165, 0, 0.8);
+    background: rgba(255, 165, 0, 0.6);
   }
 
   .highlighted {

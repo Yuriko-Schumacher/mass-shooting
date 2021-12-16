@@ -308,7 +308,7 @@
 
   span {
     color: white;
-    background: rgba(255, 165, 0, 0.8);
+    background: rgba(255, 165, 0, 0.6);
     padding: 0 0.3em;
   }
 </style>

@@ -315,15 +315,15 @@
 
   .selection:hover {
     color: white;
-    border: 1px solid rgba(255, 165, 0, 0.8);
-    background: rgba(255, 165, 0, 0.8);
+    border: 1px solid rgba(255, 165, 0, 0.6);
+    background: rgba(255, 165, 0, 0.6);
     transition: all 0.2s ease;
   }
 
   .active {
     color: white;
-    border: 1px solid rgba(255, 165, 0, 0.8);
-    background: rgba(255, 165, 0, 0.8);
+    border: 1px solid rgba(255, 165, 0, 0.6);
+    background: rgba(255, 165, 0, 0.6);
     cursor: default;
   }
 
@@ -334,7 +334,7 @@
 
   span {
     color: white;
-    background: rgba(255, 165, 0, 0.8);
+    background: rgba(255, 165, 0, 0.6);
     padding: 0 0.3em;
   }
 

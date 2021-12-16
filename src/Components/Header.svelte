@@ -13,35 +13,38 @@
 			<span />
 			<span />
 			<ul id="menu">
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/campbell/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/campbell/index.html" target="_blank"
 					><li>Anna Campbell</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/chuan/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/chuan/" target="_blank"
 					><li>Sam Chuan</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/corbin/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/corbin/" target="_blank"
 					><li>Ryan Corbin</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/kauffman/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/kauffman/" target="_blank"
 					><li>Brennan Kauffman</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/perez/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/perez/" target="_blank"
 					><li>Sofia Perez Arias</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/schumacher/index.html"
+				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/schumacher/index.html" target="_blank"
 					><li>Yuriko Schumacher</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/wolfinger/index.html"
+				<a href="https://mattewolfinger.github.io/" target="_blank"
 					><li>Matt Wolfinger</li></a
 				>
 			</ul>
 		</div>
+    <a href="https://mediainnovation.camd.northeastern.edu/2021/masters/">
+      <div class="logo"></div>
+    </a>
 	</nav>
 </header>
 
@@ -71,6 +74,18 @@ a {
 		background-position: center;
 		background-size: auto 37px;
 	}
+
+  .essential-nav > a {
+    position: relative;
+  }
+
+  .logo {
+    width: 50%;
+    height: 55px;
+    position: fixed;
+    top: 0;
+    left: 25%;
+  }
 
 	#menuToggle {
 		display: block;
@@ -212,5 +227,4 @@ a {
 	.essential-nav ul a:hover li {
 		color: #24608d;
 	}
-
 </style>
