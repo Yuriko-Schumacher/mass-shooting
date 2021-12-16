@@ -353,7 +353,7 @@
 
   select:focus {
     color: white;
-    outline: none;
+    outline: 1px solid #eeeeee;
   }
 
   option {
