@@ -33,7 +33,7 @@
 					><li>Sofia Perez Arias</li></a
 				>
 
-				<a href="https://mediainnovation.camd.northeastern.edu/2021/masters/schumacher/index.html" target="_blank"
+				<a href="https://yuriko-schumacher.github.io/mass-shooting/"
 					><li>Yuriko Schumacher</li></a
 				>
 
