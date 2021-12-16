@@ -53,12 +53,15 @@
 
   victimsD.map(d => {
     d.id = +d.id;
-    d.victim_age = +d.victim_age;
+    d.victim_count = +d.victim_count;
+    d.victim_age = d.victim_age === "14-20" ? "NA" : +d.victim_age;
     d.total_victims = +d.total_victims;
     d.total_words = +d.total_words;
     d.suspect_1_age = +d.suspect_1_age;
     d.suspect_2_age = d.suspect_2_age === "NA" ? "NA" : +d.suspect_2_age;
   })
+
+  console.log(victimsD)
 
   let filteredD = data.filter(d => d.total_front_page !== "NA")
   let dropdownD = filteredD.filter(d => d.id != "113" && d.id != "27" && d.id != "91");

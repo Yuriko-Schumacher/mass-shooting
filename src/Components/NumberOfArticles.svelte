@@ -621,12 +621,11 @@ import { lineRadial } from 'd3';
     text-align: left;
   }
 
-  .axis-ticks, .text-label {
+  .axis-ticks {
     fill: #eeeeee;
     font-size: 12px;
     font-family: 'Fira Sans Condensed', sans-serif;
     opacity: 0.8;
-    text-shadow: 0px 0px 2px black;
   }
 
   span {
