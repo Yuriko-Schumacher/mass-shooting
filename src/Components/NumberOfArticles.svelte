@@ -2,6 +2,7 @@
   import * as d3 from 'd3';
   import Scroller from "@sveltejs/svelte-scroller";
   import { spring } from 'svelte/motion';
+import { lineRadial } from 'd3';
 
   export let data;
   export let selected;
@@ -16,8 +17,9 @@
 
   const parseTime = d3.timeParse("%m/%d/%y")
   const format = d3.format(',')
+  const getYear = d3.timeFormat("%Y");
 
-  const margin = { t: 75, r: 50, b: 50, l: 50 }
+  const margin = { t: 75, r: 50, b: 75, l: 75 }
   const width = window.innerWidth * 0.9 * 0.6;
   const maxHeight = window.innerHeight;
   let height = width > maxHeight ? maxHeight : width;
@@ -25,8 +27,18 @@
   let innerHeight = height - margin.t - margin.b;
   const innerWidth = width - margin.l - margin.r;
 
-  let domain = [...Array(42).keys()].map((d) => d + 1981);
-  let xScale, yScale;
+  let years = [...Array(40).keys()].map(d => d + 1982);
+  const counts = [...Array(12).keys()].map(d => d + 1);
+
+  let xScale = d3.scaleBand()
+          .domain(years)
+          .range([margin.l, width - margin.r])
+          .paddingInner(0.5);
+
+  let yScale = d3.scaleLinear()
+      .domain([0, 13])
+      .range([height - margin.b, margin.t]);
+
   const rScale= d3.scaleSqrt()
       .domain([0, 28])
       .range([3, 10])
@@ -36,7 +48,7 @@
   let axisTitles = {
     x: "",
     y: ""
-  } 
+  }
 
   const move = (cx, cy) => `transform: translate(${cx}px, ${cy}px`;
   const colors = {
@@ -93,9 +105,10 @@
     height = width / 2.5 > maxHeight ? maxHeight : width / 2.5;
     innerHeight = height - margin.t - margin.b;
 
-    domain = [...Array(42).keys()].map((d) => d + 1981);
+    years = [...Array(40).keys()].map(d => d + 1982);
+
     xScale = d3.scaleBand()
-          .domain(domain)
+          .domain(years)
           .range([margin.l, width - margin.r])
           .paddingInner(0.5);
 
@@ -152,6 +165,10 @@
   else if (index >= 3) {
     height = width / 1.5 > maxHeight ? maxHeight : width / 1.5;
     innerHeight = height - margin.t - margin.b;
+
+    years = [...Array(40).keys()].map(d => d + 1982).map(d => d.toString()).map(d => d.slice(-2)).filter(d => d % 5 === 0)
+    years = years.map(d => "01/01/".concat("", d))
+    console.log(years)
 
     xScale = d3.scaleTime()
       .domain([parseTime("01/01/81"), parseTime("12/31/21")])
@@ -310,15 +327,66 @@
         </g>
         <g class="axis-titles">
           <text class="axis-label"
-                transform={`translate(30, ${innerHeight / 2 + 150}) rotate(-90)`}>
+                transform={`translate(15, ${innerHeight / 2 + 150}) rotate(-90)`}>
             {axisTitles.y}
           </text>
           <text class="axis-label"
                 x={innerWidth / 2 + 40}
-                y={innerHeight + 100}>
+                y={innerHeight + 120}>
             {axisTitles.x}
           </text>
         </g>
+        <g class="axis-ticks">
+          <line
+            x1="{margin.l}"
+            y1="{height - margin.b}"
+            x2="{width - margin.r}"
+            y2="{height - margin.b}"
+            stroke-width="1.5"
+            stroke="white"
+            stroke-opacity="{index === 3 ? 0 : 0.2}"
+          ></line>
+          {#each years as year}
+            <text
+              x="{index <= 3 ? xScale(year) : xScale(parseTime(year))}"
+              y="{innerHeight + 90}"
+              fill="white"
+              text-anchor="middle"
+              fill-opacity="{index <= 3 ? year % 5 === 0 ? 1 : 0 : 1}"
+            >{index <= 3 ? year : getYear(parseTime(year))}</text>
+            <line
+              x1="{index <= 3 ? xScale(year) : xScale(parseTime(year))}"
+              y1="{innerHeight + 70}"
+              x2="{index <= 3 ? xScale(year) : xScale(parseTime(year))}"
+              y2="{innerHeight + 80}"
+              stroke-width="{year % 5 === 0 ? 1.5 : 0}"
+              stroke="white"
+              stroke-opacity="0.2"
+            ></line>
+          {/each}
+        </g>
+        {#if index < 3}
+          <g class="axis-ticks">
+            {#each counts as count}
+              <text
+                x="{margin.l}"
+                y="{yScale(count)}"
+                fill="white"
+                text-anchor="end"
+                fill-opacity="{count % 5 === 0 ? 1 : 0}"
+              >{count}</text>
+              <line
+                x1="{margin.l}"
+                y1="{yScale(count)}"
+                x2="{width - margin.r}"
+                y2="{yScale(count)}"
+                stroke-width="{count % 5 === 0 ? 1.5 : 0.5}"
+                stroke="white"
+                stroke-opacity="0.2"
+              ></line>
+            {/each}
+          </g>
+        {/if}
         <g class="circles">
           {#each $circles as {cx, cy, cr, strokeWidth, opacity, r, g, b, id}} 
               <circle
