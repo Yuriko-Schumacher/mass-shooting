@@ -126,7 +126,7 @@
           stroke="{d.id === selected ? "orange" : "#cccccc"}"
           stroke-width="0.4"
           fill="{d.id === selected ? "orange" : "#cccccc"}"
-          fill-opacity="{d.hate == "TRUE" ? 0.8 : 0.1}"
+          fill-opacity="{d.hate == "TRUE" ? 1 : 0.1}"
           stroke-opacity="{d.hate == "TRUE" ? 1 : 0.4}"
           rank="{d.rank}"
           id="{d.id}"
@@ -232,7 +232,7 @@
           stroke="{d.id === selected ? "orange" : "#cccccc"}"
           stroke-width="0.4"
           fill="{d.id === selected ? "orange" : "#cccccc"}"
-          fill-opacity="{d.terrorism == "TRUE" ? 0.8 : 0.1}"
+          fill-opacity="{d.terrorism == "TRUE" ? 1 : 0.1}"
           stroke-opacity="{d.terrorism == "TRUE" ? 1 : 0.4}"
           rank="{d.rank}"
           id="{d.id}"
@@ -264,8 +264,9 @@
 
 <style>
   .chart {
-    width: 54vw;
-    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 5rem auto;
   }
 
